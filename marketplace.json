@@ -24,13 +24,7 @@
       },
       "icon": "https://docs.cloudbase.net/en/img/favicon.png",
       "category": "developer-tools",
-      "keywords": [
-        "cloudbase",
-        "tencent-cloud",
-        "wechat",
-        "serverless",
-        "mcp"
-      ]
+      "keywords": ["cloudbase", "tencent-cloud", "wechat", "serverless", "mcp"]
     },
     {
       "name": "mimosa",
@@ -51,13 +45,7 @@
         "name": "Mimosa"
       },
       "category": "developer-tools",
-      "keywords": [
-        "security",
-        "code-scanning",
-        "hooks",
-        "mcp",
-        "sdlc"
-      ]
+      "keywords": ["security", "code-scanning", "hooks", "mcp", "sdlc"]
     },
     {
       "name": "github",
@@ -101,13 +89,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/video-agent/icon.png",
       "category": "productivity",
-      "keywords": [
-        "video-editing",
-        "video-agent",
-        "visual-inspection",
-        "timeline",
-        "ffmpeg"
-      ]
+      "keywords": ["video-editing", "video-agent", "visual-inspection", "timeline", "ffmpeg"]
     },
     {
       "name": "video2code",
@@ -124,12 +106,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/video2code/icon.png",
       "category": "productivity",
-      "keywords": [
-        "video2code",
-        "replication",
-        "webapp",
-        "motion"
-      ]
+      "keywords": ["video2code", "replication", "webapp", "motion"]
     },
     {
       "name": "accounting-and-reporting",
@@ -180,13 +157,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/fixed-income-research/icon.png",
       "category": "finance",
-      "keywords": [
-        "fixed-income",
-        "credit-research",
-        "bonds",
-        "yield-curve",
-        "credit-spread"
-      ]
+      "keywords": ["fixed-income", "credit-research", "bonds", "yield-curve", "credit-spread"]
     },
     {
       "name": "find-clients",
@@ -238,13 +209,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/trade-calculator/icon.png",
       "category": "finance",
-      "keywords": [
-        "m-and-a",
-        "deal-modeling",
-        "accretion-dilution",
-        "ipo",
-        "capital-structure"
-      ]
+      "keywords": ["m-and-a", "deal-modeling", "accretion-dilution", "ipo", "capital-structure"]
     },
     {
       "name": "pick-funds",
@@ -267,13 +232,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/fund-research/icon.png",
       "category": "finance",
-      "keywords": [
-        "funds",
-        "etf",
-        "fund-screening",
-        "manager-research",
-        "holdings-analysis"
-      ]
+      "keywords": ["funds", "etf", "fund-screening", "manager-research", "holdings-analysis"]
     },
     {
       "name": "read-macro",
@@ -296,13 +255,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/macro-strategy/icon.png",
       "category": "finance",
-      "keywords": [
-        "macro",
-        "strategy",
-        "asset-allocation",
-        "index-valuation",
-        "policy-tracking"
-      ]
+      "keywords": ["macro", "strategy", "asset-allocation", "index-valuation", "policy-tracking"]
     },
     {
       "name": "run-fpa",
@@ -325,13 +278,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/business-analysis/icon.png",
       "category": "finance",
-      "keywords": [
-        "fpa",
-        "corporate-finance",
-        "budgeting",
-        "cash-forecast",
-        "management-reporting"
-      ]
+      "keywords": ["fpa", "corporate-finance", "budgeting", "cash-forecast", "management-reporting"]
     },
     {
       "name": "vet-companies",
@@ -354,13 +301,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/corporate-due-diligence/icon.png",
       "category": "finance",
-      "keywords": [
-        "due-diligence",
-        "kyc",
-        "risk-screening",
-        "related-parties",
-        "counterparty"
-      ]
+      "keywords": ["due-diligence", "kyc", "risk-screening", "related-parties", "counterparty"]
     },
     {
       "name": "watch-positions",
@@ -412,13 +353,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/equity-research/icon.png",
       "category": "finance",
-      "keywords": [
-        "equity-research",
-        "valuation",
-        "dcf",
-        "lbo",
-        "earnings"
-      ]
+      "keywords": ["equity-research", "valuation", "dcf", "lbo", "earnings"]
     },
     {
       "name": "gitlab",
@@ -435,14 +370,7 @@
       },
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/gitlab/icon.png",
       "category": "developer-tools",
-      "keywords": [
-        "gitlab",
-        "glab",
-        "merge-request",
-        "issue",
-        "ci-cd",
-        "gitlab-api"
-      ]
+      "keywords": ["gitlab", "glab", "merge-request", "issue", "ci-cd", "gitlab-api"]
     },
     {
       "name": "alibaba-cloud-cli",
@@ -464,15 +392,7 @@
         "url": "https://z.ai"
       },
       "category": "developer-tools",
-      "keywords": [
-        "alibaba-cloud",
-        "aliyun",
-        "aliyun-cli",
-        "cloud",
-        "ecs",
-        "oss",
-        "ram"
-      ]
+      "keywords": ["alibaba-cloud", "aliyun", "aliyun-cli", "cloud", "ecs", "oss", "ram"]
     },
     {
       "name": "lark-cli",
@@ -494,16 +414,7 @@
         "url": "https://z.ai"
       },
       "category": "productivity",
-      "keywords": [
-        "feishu",
-        "lark",
-        "lark-cli",
-        "docs",
-        "sheets",
-        "base",
-        "calendar",
-        "messaging"
-      ]
+      "keywords": ["feishu", "lark", "lark-cli", "docs", "sheets", "base", "calendar", "messaging"]
     },
     {
       "name": "tencent-meeting-cli",
@@ -525,13 +436,7 @@
         "url": "https://z.ai"
       },
       "category": "productivity",
-      "keywords": [
-        "tencent-meeting",
-        "tencentmeeting",
-        "meeting",
-        "cli",
-        "oauth2"
-      ]
+      "keywords": ["tencent-meeting", "tencentmeeting", "meeting", "cli", "oauth2"]
     },
     {
       "name": "dingtalk-cli",
@@ -554,15 +459,7 @@
       "homepage": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli",
       "repository": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli",
       "license": "Apache-2.0",
-      "keywords": [
-        "dingtalk",
-        "dws",
-        "workspace",
-        "chat",
-        "docs",
-        "calendar",
-        "tasks"
-      ],
+      "keywords": ["dingtalk", "dws", "workspace", "chat", "docs", "calendar", "tasks"],
       "category": "productivity",
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/dingtalk-cli/icon.png"
     },
@@ -612,11 +509,7 @@
         "name": "Z.ai",
         "url": "https://z.ai"
       },
-      "keywords": [
-        "hexin",
-        "finance",
-        "mcp"
-      ],
+      "keywords": ["hexin", "finance", "mcp"],
       "displayName": "同花顺",
       "displayName_i18n": {
         "en": "RoyalFlush iFinD",
@@ -639,11 +532,7 @@
         "name": "Z.ai",
         "url": "https://z.ai"
       },
-      "keywords": [
-        "wind",
-        "finance",
-        "mcp"
-      ],
+      "keywords": ["wind", "finance", "mcp"],
       "displayName": "Wind 万得",
       "displayName_i18n": {
         "en": "Wind",
@@ -666,11 +555,7 @@
         "name": "Z.ai",
         "url": "https://z.ai"
       },
-      "keywords": [
-        "tianyancha",
-        "finance",
-        "mcp"
-      ],
+      "keywords": ["tianyancha", "finance", "mcp"],
       "displayName": "天眼查",
       "displayName_i18n": {
         "en": "Tianyancha",
@@ -693,11 +578,7 @@
         "name": "Z.ai",
         "url": "https://z.ai"
       },
-      "keywords": [
-        "finance-search",
-        "finance",
-        "mcp"
-      ],
+      "keywords": ["finance-search", "finance", "mcp"],
       "displayName": "金融聚合搜索",
       "displayName_i18n": {
         "en": "Financial Aggregated Search",
@@ -740,6 +621,115 @@
         "visualization"
       ],
       "icon": "https://cdn-zcode.z.ai/zcode/official-plugin/assets/obsidian/icon.png"
+    },
+    {
+      "name": "blender",
+      "displayName": "Blender",
+      "displayName_i18n": {
+        "en": "Blender",
+        "zh-CN": "Blender"
+      },
+      "version": "0.2.1",
+      "source": "./plugins/blender",
+      "description": "在 ZCode 对话旁打开 Blender 场景：Agent 修改物体、材质、相机并渲染预览；面板用 Three.js 轻量浏览。",
+      "description_i18n": {
+        "en": "Edit Blender scenes with an interactive 3D panel and MCP tools.",
+        "zh-CN": "在 ZCode 对话旁打开 Blender 场景：Agent 修改物体、材质、相机并渲染预览；面板用 Three.js 轻量浏览。"
+      },
+      "category": "productivity",
+      "author": {
+        "name": "ZCode"
+      }
+    },
+    {
+      "name": "excalidraw",
+      "displayName": "Excalidraw",
+      "displayName_i18n": {
+        "en": "Excalidraw",
+        "zh-CN": "Excalidraw"
+      },
+      "version": "0.2.1",
+      "source": "./plugins/excalidraw",
+      "description": "让 Agent 生成图形，在对话侧栏用 Excalidraw 编辑、引用选区、继续修改并导出。",
+      "description_i18n": {
+        "en": "Create and edit diagrams with Excalidraw and MCP tools.",
+        "zh-CN": "让 Agent 生成图形，在对话侧栏用 Excalidraw 编辑、引用选区、继续修改并导出。"
+      },
+      "category": "productivity",
+      "author": {
+        "name": "ZCode"
+      }
+    },
+    {
+      "name": "openpencil",
+      "displayName": "OpenPencil",
+      "displayName_i18n": {
+        "en": "OpenPencil",
+        "zh-CN": "OpenPencil"
+      },
+      "version": "0.2.1",
+      "source": "./plugins/openpencil",
+      "description": "在对话侧栏用 OpenPencil 编辑工作区里的 Figma .fig 设计稿，Agent 通过设计工具协同修改、引用选区并生成代码。",
+      "description_i18n": {
+        "en": "Edit design files with OpenPencil and MCP tools.",
+        "zh-CN": "在对话侧栏用 OpenPencil 编辑工作区里的 Figma .fig 设计稿，Agent 通过设计工具协同修改、引用选区并生成代码。"
+      },
+      "category": "productivity",
+      "author": {
+        "name": "ZCode"
+      }
+    },
+    {
+      "name": "showcase",
+      "displayName": "Showcase",
+      "displayName_i18n": {
+        "en": "Showcase",
+        "zh-CN": "Showcase"
+      },
+      "version": "0.4.2",
+      "source": "./plugins/showcase",
+      "description": "完整能力演示目录 SC01–SC53：基础插件 UI、App 内模型问答、取消、保活、浏览器存储、失败与隔离边界。",
+      "description_i18n": {
+        "en": "Explore MCP Apps capabilities, interactions, and lifecycle examples.",
+        "zh-CN": "完整能力演示目录 SC01–SC53：基础插件 UI、App 内模型问答、取消、保活、浏览器存储、失败与隔离边界。"
+      },
+      "category": "developer-tools",
+      "author": {
+        "name": "ZCode"
+      }
+    },
+    {
+      "name": "zcode-mcp-app-dev",
+      "version": "0.1.1",
+      "description": "Develop MCP Apps for ZCode with official SDKs and a small host-extension reference.",
+      "description_i18n": {
+        "en": "Develop MCP Apps for ZCode with official SDKs and a small host-extension reference.",
+        "zh-CN": "使用官方 SDK 开发 ZCode MCP App，附宿主扩展约定与独立构建指引。"
+      },
+      "author": {
+        "name": "ZCode"
+      },
+      "source": "./plugins/zcode-mcp-app-dev",
+      "category": "developer-tools"
+    },
+    {
+      "name": "disk-cleaner",
+      "displayName": "Disk Cleaner",
+      "displayName_i18n": {
+        "en": "Disk Cleaner",
+        "zh-CN": "磁盘清理器"
+      },
+      "version": "0.1.1",
+      "source": "./plugins/disk-cleaner",
+      "description": "只读扫描目录占用与大文件，在侧栏逐项确认后移入系统回收站。",
+      "description_i18n": {
+        "en": "Analyze disk usage and large files, then review selected files before moving them to the system trash.",
+        "zh-CN": "只读扫描目录占用与大文件，在侧栏逐项确认后移入系统回收站。"
+      },
+      "author": {
+        "name": "ZCode"
+      },
+      "category": "utilities"
     }
   ]
 }

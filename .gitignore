@@ -8,3 +8,10 @@ __pycache__/
 mirror-failure.txt
 mirror-result.txt
 publish-failure.txt
+
+# MCP App development dependencies and generated install resources.
+node_modules/
+ui-plugins/*/licenses/
+plugins/blender/ui/dist/
+plugins/blender/blender/
+*.tsbuildinfo

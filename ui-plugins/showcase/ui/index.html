@@ -1,0 +1,1813 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Showcase</title>
+    <style>
+      /* 颜色先取宿主 hostContext.styles.variables（SC26），没有就用兜底；两套主题都覆盖。 */
+      :root {
+        color-scheme: light dark;
+        --fg: var(--color-text-primary, #1f2328);
+        --bg: var(--color-background-primary, #ffffff);
+        --muted: var(--color-text-secondary, #656d76);
+        --line: var(--color-border-primary, #d0d7de);
+        --accent: var(--color-text-info, #0969da);
+        --bad: var(--color-text-danger, #cf222e);
+        --ok: var(--color-text-success, #1a7f37);
+        --warn: var(--color-text-warning, #9a6700);
+        --font: var(--font-sans, system-ui, -apple-system, "PingFang SC", sans-serif);
+        --mono: var(--font-mono, ui-monospace, Menlo, monospace);
+      }
+      [data-theme="dark"] {
+        --fg: var(--color-text-primary, #e6edf3);
+        --bg: var(--color-background-primary, #0d1117);
+        --muted: var(--color-text-secondary, #8b949e);
+        --line: var(--color-border-primary, #30363d);
+        --accent: var(--color-text-info, #58a6ff);
+        --bad: var(--color-text-danger, #ff7b72);
+        --ok: var(--color-text-success, #3fb950);
+        --warn: var(--color-text-warning, #d29922);
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 13px/1.5 var(--font);
+      }
+      body {
+        display: flow-root;
+      } /* body 高度即内容高度，供 reportHeight 测量 */
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 8px 10px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .tabs button {
+        background: none;
+        border: 1px solid transparent;
+        border-bottom: 0;
+        color: var(--muted);
+        padding: 6px 10px;
+        border-radius: 6px 6px 0 0;
+        cursor: pointer;
+        font: inherit;
+      }
+      .tabs button[aria-selected="true"] {
+        color: var(--fg);
+        border-color: var(--line);
+        background: var(--bg);
+      }
+      section {
+        display: none;
+        padding: 10px 12px 12px;
+      }
+      section[data-active] {
+        display: block;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 4px 6px;
+        border-bottom: 1px solid var(--line);
+      }
+      .ok {
+        color: var(--ok);
+      }
+      .bad {
+        color: var(--bad);
+      }
+      .warn {
+        color: var(--warn);
+      }
+      /* 每个操作一行：按钮 + "预期"说明，说明放在按钮右侧，窄卡片自动换到下一行。 */
+      .action {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 6px 10px;
+        margin-top: 8px;
+      }
+      .action button,
+      .pill,
+      .action select {
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--fg);
+        border-radius: 6px;
+        padding: 5px 9px;
+        cursor: pointer;
+        font: inherit;
+        white-space: nowrap;
+      }
+      .action button:hover {
+        border-color: var(--accent);
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+        flex: 1 1 260px;
+      }
+      .hint::before {
+        content: attr(data-prefix);
+        color: var(--accent);
+        margin-right: 2px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .lead {
+        color: var(--muted);
+        font-size: 12px;
+        margin: 0 0 4px;
+      }
+      .status {
+        margin-top: 8px;
+        min-height: 1.2em;
+      }
+      .banner {
+        margin-top: 8px;
+        padding: 8px 10px;
+        border: 1px solid var(--warn);
+        border-radius: 6px;
+      }
+      pre {
+        margin: 6px 0 0;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        overflow: auto;
+        max-height: 180px;
+        font: 12px/1.4 var(--mono);
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      h4 {
+        margin: 14px 0 2px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      footer {
+        padding: 6px 12px 10px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      #read-image {
+        vertical-align: middle;
+        margin-left: 6px;
+        image-rendering: pixelated;
+      }
+      canvas {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="data" aria-selected="true" data-i18n="tabData"></button>
+      <button role="tab" data-tab="actions" data-i18n="tabActions"></button>
+      <button role="tab" data-tab="state" data-i18n="tabState"></button>
+      <button role="tab" data-tab="resources" data-i18n="tabResources"></button>
+      <button role="tab" data-tab="files" data-i18n="tabFiles"></button>
+      <button role="tab" data-tab="host" data-i18n="tabHost"></button>
+      <button role="tab" data-tab="log" data-i18n="tabLog"></button>
+    </div>
+
+    <!-- SC01 SC03 SC14 SC23：投喂（toolInput / toolOutput / 截断）与 app-only 回调 -->
+    <section data-tab="data" data-active>
+      <p class="lead" data-i18n="dataLead"></p>
+      <div class="muted" id="summary"></div>
+      <div class="muted" id="tool-input"></div>
+      <div class="banner" id="truncated" hidden>
+        <span id="truncated-text"></span>
+        <div class="action">
+          <button id="refetch" data-i18n="refetch"></button>
+          <span class="hint" data-i18n-hint="refetchHint"></span>
+        </div>
+      </div>
+      <table id="table">
+        <thead>
+          <tr>
+            <th data-i18n="thService"></th>
+            <th data-i18n="thEnv"></th>
+            <th data-i18n="thVersion"></th>
+            <th data-i18n="thHealth"></th>
+            <th data-i18n="thLatency"></th>
+            <th data-i18n="thSelect"></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <pre id="detail-view" hidden></pre>
+      <div class="action">
+        <button id="refresh" data-i18n="refresh"></button>
+        <select id="filter" class="pill">
+          <option value="all">all</option>
+          <option>prod</option>
+          <option>staging</option>
+          <option>dev</option>
+        </select>
+        <span class="hint" data-i18n-hint="refreshHint"></span>
+      </div>
+      <div class="action">
+        <button id="toggle-health" data-i18n="toggleHealth"></button>
+        <span class="hint" data-i18n-hint="toggleHealthHint"></span>
+      </div>
+      <div class="status muted" id="data-result"></div>
+    </section>
+
+    <!-- SC05–SC10：后续消息、模型上下文、显示模式、外链 -->
+    <section data-tab="actions">
+      <h4 data-i18n="followUpTitle"></h4>
+      <div class="action">
+        <button id="follow-up" data-i18n="followUp"></button
+        ><span class="hint" data-i18n-hint="followUpHint"></span>
+      </div>
+      <div class="action">
+        <button id="follow-up-later" data-i18n="followUpLater"></button
+        ><span class="hint" data-i18n-hint="followUpLaterHint"></span>
+      </div>
+      <div class="action">
+        <button id="follow-up-structured" data-i18n="followUpStructured"></button
+        ><span class="hint" data-i18n-hint="followUpStructuredHint"></span>
+      </div>
+      <h4 data-i18n="contextTitle"></h4>
+      <div class="action">
+        <button id="add-context" data-i18n="addContext"></button
+        ><span class="hint" data-i18n-hint="addContextHint"></span>
+      </div>
+      <div class="action">
+        <button id="add-image-context" data-i18n="addImage"></button
+        ><span class="hint" data-i18n-hint="addImageHint"></span>
+      </div>
+      <div class="action">
+        <button id="add-gif-context" data-i18n="addGif"></button
+        ><span class="hint" data-i18n-hint="addGifHint"></span>
+      </div>
+      <h4 data-i18n="displayTitle"></h4>
+      <div class="action">
+        <button id="fullscreen" data-i18n="fullscreen"></button
+        ><span class="hint" data-i18n-hint="fullscreenHint"></span>
+      </div>
+      <div class="action">
+        <button id="inline" data-i18n="inline"></button
+        ><span class="hint" data-i18n-hint="inlineHint"></span>
+      </div>
+      <div class="action">
+        <button id="pip" data-i18n="pip"></button
+        ><span class="hint" data-i18n-hint="pipHint"></span>
+      </div>
+      <div class="action">
+        <button id="external" data-i18n="external"></button
+        ><span class="hint" data-i18n-hint="externalHint"></span>
+      </div>
+      <div class="status muted" id="action-result"></div>
+    </section>
+
+    <!-- SC11：widgetState -->
+    <section data-tab="state">
+      <p class="lead" data-i18n="stateLead"></p>
+      <div class="action">
+        <button id="bump" data-i18n="bump"></button
+        ><span class="hint" data-i18n-hint="bumpHint"></span>
+      </div>
+      <div class="action">
+        <button id="reset-state" data-i18n="resetState"></button
+        ><span class="hint" data-i18n-hint="resetStateHint"></span>
+      </div>
+      <pre id="state-view"></pre>
+    </section>
+
+    <!-- SC15–SC19：资源读取、列表、模板、订阅、动态注册 -->
+    <section data-tab="resources">
+      <div class="action">
+        <button id="list-resources" data-i18n="listResources"></button
+        ><span class="hint" data-i18n-hint="listResourcesHint"></span>
+      </div>
+      <pre id="resources-view"></pre>
+      <div class="action">
+        <button id="read-json" data-i18n="readJson"></button
+        ><span class="hint" data-i18n-hint="readJsonHint"></span>
+      </div>
+      <div class="action">
+        <button id="read-png" data-i18n="readPng"></button
+        ><span class="hint" data-i18n-hint="readPngHint"></span>
+      </div>
+      <div class="action">
+        <button id="read-template" data-i18n="readTemplate"></button
+        ><span class="hint" data-i18n-hint="readTemplateHint"></span>
+      </div>
+      <div class="action">
+        <button id="read-foreign" data-i18n="readForeign"></button
+        ><span class="hint" data-i18n-hint="readForeignHint"></span>
+      </div>
+      <div class="status muted" id="read-view">
+        <img id="read-image" alt="" width="16" height="16" hidden />
+      </div>
+      <h4 data-i18n="subscriptionTitle"></h4>
+      <div class="action">
+        <button id="subscribe" data-i18n="subscribe"></button
+        ><span class="hint" data-i18n-hint="subscribeHint"></span>
+      </div>
+      <div class="action">
+        <button id="unsubscribe" data-i18n="unsubscribe"></button
+        ><span class="hint" data-i18n-hint="unsubscribeHint"></span>
+      </div>
+      <div class="status muted" id="subscribe-result"></div>
+      <pre id="live-log"></pre>
+      <h4 data-i18n="dynamicTitle"></h4>
+      <div class="action">
+        <button id="register-tool" data-i18n="registerTool"></button
+        ><span class="hint" data-i18n-hint="registerToolHint"></span>
+      </div>
+      <div class="status muted" id="register-result"></div>
+    </section>
+
+    <!-- SC22：downloadFile -->
+    <section data-tab="files">
+      <p class="lead" data-i18n="filesLead"></p>
+      <div class="action">
+        <button id="download-csv" data-i18n="downloadCsv"></button
+        ><span class="hint" data-i18n-hint="downloadCsvHint"></span>
+      </div>
+      <div class="action">
+        <button id="download-png" data-i18n="downloadPng"></button
+        ><span class="hint" data-i18n-hint="downloadPngHint"></span>
+      </div>
+      <div class="action">
+        <button id="download-link" data-i18n="downloadLink"></button
+        ><span class="hint" data-i18n-hint="downloadLinkHint"></span>
+      </div>
+      <div class="action">
+        <button id="download-multi" data-i18n="downloadMulti"></button
+        ><span class="hint" data-i18n-hint="downloadMultiHint"></span>
+      </div>
+      <div class="status muted" id="download-result"></div>
+    </section>
+
+    <!-- SC26–SC28 SC30：宿主信息、兼容别名、原始 JSON-RPC、CSP -->
+    <section data-tab="host">
+      <h4 data-i18n="handshakeTitle"></h4>
+      <p class="lead" data-i18n="handshakeLead"></p>
+      <pre id="host-view"></pre>
+      <h4>hostContext</h4>
+      <p class="lead" data-i18n="contextLead"></p>
+      <div class="action">
+        <label class="muted"
+          ><input type="checkbox" id="apply-styles" checked /> <span data-i18n="applyStyles"></span
+        ></label>
+        <span class="hint" data-i18n-hint="applyStylesHint"></span>
+      </div>
+      <pre id="context-view"></pre>
+      <h4 data-i18n="openaiTitle"></h4>
+      <p class="lead" data-i18n="openaiLead"></p>
+      <div class="muted" id="openai-view"></div>
+      <h4 data-i18n="rawTitle"></h4>
+      <div class="action">
+        <button id="rpc-ping" data-i18n="rpcPing"></button
+        ><span class="hint" data-i18n-hint="rpcPingHint"></span>
+      </div>
+      <div class="action">
+        <button id="rpc-log" data-i18n="rpcLog"></button
+        ><span class="hint" data-i18n-hint="rpcLogHint"></span>
+      </div>
+      <div class="status muted" id="rpc-result"></div>
+      <h4 data-i18n="networkTitle"></h4>
+      <div class="action">
+        <button id="fetch-ok" data-i18n="fetchOk"></button
+        ><span class="hint" data-i18n-hint="fetchOkHint"></span>
+      </div>
+      <div class="action">
+        <button id="fetch-blocked" data-i18n="fetchBlocked"></button
+        ><span class="hint" data-i18n-hint="fetchBlockedHint"></span>
+      </div>
+      <pre id="network-view"></pre>
+    </section>
+
+    <!-- SC29：shell → iframe 的全部通知 -->
+    <section data-tab="log">
+      <p class="lead" data-i18n="logLead"></p>
+      <div class="action"><button id="clear-log" data-i18n="clearLog"></button></div>
+      <pre id="protocol-log"></pre>
+    </section>
+
+    <footer>
+      <span id="host-info"></span>
+      <span id="display-mode"></span>
+    </footer>
+    <canvas id="chart" width="320" height="120"></canvas>
+
+    <script>
+      // 文案：zh-CN / en-US，按 hostContext.locale 前缀选，缺省中文（与 Blender 面板同一做法）。
+      // 每个按钮配一条"预期"说明（*Hint），告诉用户点下去宿主应该发生什么，方便对照验收。
+      var ZH = {
+        prefix: "预期：",
+        tabData: "服务",
+        tabActions: "操作",
+        tabState: "状态",
+        tabResources: "资源",
+        tabFiles: "文件",
+        tabHost: "宿主",
+        tabLog: "日志",
+        dataLead:
+          "这一页显示工具结果（toolOutput）。仪表盘、单个服务详情、审计日志三种结果都会投到这里。",
+        waiting: "等待工具结果…",
+        thService: "服务",
+        thEnv: "环境",
+        thVersion: "版本",
+        thHealth: "健康",
+        thLatency: "延迟",
+        thSelect: "选择",
+        healthy: "健康",
+        unhealthy: "异常",
+        none: "无",
+        summaryDashboard: function (n, refresh, region, at) {
+          return n + " 个服务 · 第 " + refresh + " 次刷新 · 区域 " + region + " · " + at;
+        },
+        lastDeploy: function (svc, env) {
+          return " · 最近部署 " + svc + "→" + env;
+        },
+        summaryService: function (s) {
+          return (
+            "服务 " +
+            s.name +
+            " · " +
+            (s.healthy ? "健康" : "异常") +
+            " · " +
+            s.latencyMs +
+            " ms · " +
+            s.env +
+            " " +
+            s.version
+          );
+        },
+        detailHistory: "最近 12 分钟延迟：",
+        detailDeployments: "部署记录：",
+        summaryAudit: function (total) {
+          return "审计日志 · " + total + " 条（完整 structuredContent 已到达）";
+        },
+        summaryAuditTruncated: "审计日志 · structuredContent 被宿主省略（已截断）",
+        toolInput: function (json) {
+          return "本次调用参数（toolInput）：" + json;
+        },
+        truncated: function (bytes, out) {
+          return (
+            "宿主省略了 structuredContent：" +
+            bytes +
+            " 字节 > 64 KiB 上限，页面 toolOutput === " +
+            out +
+            "。"
+          );
+        },
+        refetch: "用 callTool 重取全量",
+        refetchHint:
+          "同一个工具从页面再调一次，拿到完整数据；对话里不会多出工具行，callTool 的结果也不受持久化上限约束。",
+        refetched: function (n) {
+          return "已用 callTool 重取 " + n + " 条";
+        },
+        refetchFailed: function (m) {
+          return "重取失败：" + m;
+        },
+        refresh: "刷新（app-only 工具）",
+        refreshHint:
+          "表格更新、刷新次数 +1；对话不会新增工具行，模型的工具列表里也没有 refresh_data。右侧下拉可选环境。",
+        refreshFailed: function (m) {
+          return "刷新失败：" + m;
+        },
+        toggleHealth: "翻转所选服务的健康态",
+        toggleHealthHint:
+          "调用没有 resourceUri 的 app-only 工具 toggle_health（没勾选就取第一行）；若资源页已订阅 services.json，那里会收到 updated 并自动重读。",
+        toggled: function (name, healthy, notified) {
+          return (
+            "toggle_health：" +
+            name +
+            " → " +
+            (healthy ? "健康" : "异常") +
+            "（" +
+            (notified ? "已通知订阅者" : "没有订阅者") +
+            "）"
+          );
+        },
+        toggleFailed: function (m) {
+          return "翻转失败：" + m;
+        },
+        followUpTitle: "后续消息（ui/message）",
+        followUp: "让模型总结异常服务",
+        followUpHint:
+          "点击本身就是用户手势，消息立刻以你的身份发出，消息下方标“来自插件 showcase”，模型接着回答。",
+        followUpLater: "6 秒后发送（无手势）",
+        followUpLaterHint: "把鼠标移开等 6 秒，宿主弹出可编辑的确认框；点取消这里会显示已取消。",
+        followUpStructured: "带 structuredContent 发送",
+        followUpStructuredHint:
+          "消息正文后面拼一段 ```json 块，内容是你勾选的服务名（没勾选就是全部）。",
+        followUpSent: "后续消息已发送。",
+        followUpCancelled: function (m) {
+          return "后续消息已取消：" + m;
+        },
+        followUpFailed: function (m) {
+          return "后续消息失败：" + m;
+        },
+        followUpWait: "6 秒后无手势发送…",
+        contextTitle: "模型上下文（ui/update-model-context）",
+        addContext: "把勾选的行加入模型上下文",
+        addContextHint:
+          "输入框上方出现“插件上下文”chip，随下一条消息一起发给模型，之后 chip 消失；再点一次会替换上一份。",
+        contextAdded: function (n) {
+          return "已把 " + n + " 行加入 composer 上下文。";
+        },
+        contextFailed: function (m) {
+          return "加入上下文失败：" + m;
+        },
+        addImage: "加入延迟柱状图（png）",
+        addImageHint:
+          "页面用 canvas 现画一张图，composer 出现图片附件；下一回合请求里带 image 块。",
+        addGif: "加入 gif（会被拒）",
+        addGifHint: "image/gif 不在白名单，整个请求被宿主以 -32602 拒绝，这里显示错误码。",
+        imageAdded: function (mime) {
+          return "已把 " + mime + " 加入 composer 上下文（看输入框上方的附件）。";
+        },
+        imageRejected: function (code, m) {
+          return "图片上下文被拒（" + code + "）：" + m;
+        },
+        displayTitle: "显示模式与外链",
+        fullscreen: "在侧栏打开",
+        fullscreenHint: "侧栏出现本插件的 tab，内联位置留占位；这里显示实际模式 fullscreen。",
+        inline: "回到内联",
+        inlineHint: "在侧栏里点会关掉面板并回到内联卡片；在内联卡片里点就原样返回 inline。",
+        pip: "请求 pip（会降级）",
+        pipHint: "宿主不支持画中画，如实返回当前模式，不报错。",
+        external: "打开 MCP 文档",
+        externalHint: "系统浏览器打开 modelcontextprotocol.io，沙箱内不会发生导航。",
+        modeResult: function (mode, actual) {
+          return "请求 " + mode + " → 实际 displayMode=" + actual;
+        },
+        modeFailed: function (m) {
+          return "切换显示模式失败：" + m;
+        },
+        stateLead:
+          "widgetState 存在宿主 renderer 内存里：折叠再展开、内联与侧栏之间切换都能恢复；重启桌面端后为空。当前选中的 tab 也记在里面。",
+        bump: "计数 +1",
+        bumpHint: "下面 JSON 里的 counter 加一；把卡片折叠再展开（沙箱重建）后计数仍在。",
+        resetState: "清空",
+        resetStateHint: "状态变成 {}，计数和记住的 tab 一起清掉。",
+        stateCapability: function (declared) {
+          return (
+            '// hostCapabilities.experimental["zcode/widgetState"]：' +
+            (declared ? "已声明" : "未声明")
+          );
+        },
+        listResources: "列出资源与模板",
+        listResourcesHint:
+          "看到 5 个固定资源 + 每个服务一条模板实例，以及 1 个模板 service/{name}.json；别的插件的资源不会出现。",
+        resourcesListed: function (names, templates) {
+          return (
+            "资源 " +
+            names.length +
+            " 个：" +
+            names.join(", ") +
+            "\n模板 " +
+            templates.length +
+            " 个：" +
+            templates.join(", ")
+          );
+        },
+        listError: function (code, m) {
+          return "列表失败：" + code + " " + m;
+        },
+        readJson: "读 services.json",
+        readJsonHint: "拿到 application/json 文本，也就是当前服务表。",
+        readPng: "读 logo.png",
+        readPngHint: "拿到 149 字节的 image/png blob，并显示成小图。",
+        readTemplate: "读 service/billing.json",
+        readTemplateHint: "资源模板按 name 实例化，返回 billing 的详情 JSON。",
+        readForeign: "读别的插件的资源（会被拒）",
+        readForeignHint: "宿主只允许读本插件 server 的资源，这里返回错误码，读不到任何内容。",
+        readBlob: function (bytes, mime) {
+          return "blob：" + bytes + " 字节，" + mime + " ";
+        },
+        readText: function (mime, chars, preview) {
+          return "文本：" + mime + "，" + chars + " 字符：" + preview;
+        },
+        readError: function (code, m) {
+          return "读取被拒：" + code + " " + m;
+        },
+        subscriptionTitle: "订阅（resources/subscribe）",
+        subscribe: "订阅 services.json",
+        subscribeHint:
+          "显示订阅成功；之后翻转健康态或让模型 deploy，下面的实时日志会出现 updated 并自动重读。通知只带 uri，内容要自己读。",
+        unsubscribe: "退订",
+        unsubscribeHint: "之后的变更不再推送；关闭卡片或切走会话时宿主也会自动退订。",
+        subOk: "订阅成功",
+        unsubOk: "已退订",
+        subError: function (code) {
+          return "订阅失败：" + code;
+        },
+        unsubError: function (code) {
+          return "退订失败：" + code;
+        },
+        liveUpdated: function (uri) {
+          return "updated " + uri;
+        },
+        liveServices: function (h, t, d, at) {
+          return (
+            "services.json 已更新 → " +
+            h +
+            "/" +
+            t +
+            " 健康，" +
+            d +
+            " 条部署记录（updatedAt " +
+            at +
+            "）"
+          );
+        },
+        liveListChanged: "list_changed（资源列表变化）",
+        dynamicTitle: "动态注册（tools / resources list_changed）",
+        registerTool: "注册实验工具",
+        registerToolHint:
+          "服务端新增 forecast_capacity 工具与 experimental.json 资源，并发两类 list_changed（已订阅时实时日志里能看到）；下一回合模型就能调 forecast_capacity。",
+        registered: function (tool) {
+          return "已注册 " + tool + "，下一回合让模型做容量预测";
+        },
+        alreadyRegistered: function (tool) {
+          return "已经注册过：" + tool;
+        },
+        registerError: function (code, m) {
+          return "注册失败：" + code + " " + m;
+        },
+        filesLead:
+          "ui/download-file：沙箱里直接下载被阻止，宿主逐项弹原生“另存为”，不要求用户手势。",
+        downloadCsv: "下载 services.csv（文本）",
+        downloadCsvHint: "弹一次另存为，文件内容是当前表格的 CSV。",
+        downloadPng: "下载 logo.png（blob）",
+        downloadPngHint: "先 readResource 拿到 base64 blob，再交给宿主保存。",
+        downloadLink: "通过 resource_link 下载",
+        downloadLinkHint: "只给 uri，宿主自己去本插件 server 读内容再保存。",
+        downloadMulti: "一次下载两个文件",
+        downloadMultiHint: "连续弹两次另存为；任一取消整体显示失败（isError）。",
+        downloadOk: "下载完成",
+        downloadIsError: "下载取消或失败（isError）",
+        downloadError: function (code, m) {
+          return "下载出错：" + code + " " + m;
+        },
+        handshakeTitle: "握手结果（ui/initialize）",
+        handshakeLead:
+          "protocolVersion 是官方 SDK 的版本；hostCapabilities 按实例生成，插件应据此判断 downloadFile、message、updateModelContext 与 experimental 下的 zcode/widgetState、zcode/resourceSubscribe 是否可用。",
+        contextLead:
+          "主题、语言、显示模式、可用显示模式、容器尺寸、时区、设备能力；侧栏里还有 titleBar；样式变量随主题切换更新。",
+        applyStyles: "把 hostContext.styles.variables 套到本页",
+        applyStylesHint: "取消勾选后页面颜色退回自己的兜底值，切换宿主主题时对比最明显。",
+        openaiTitle: "window.openai 兼容别名",
+        openaiLead:
+          "显示 openai:function 表示宿主支持的兼容方法可用；未支持的成员（如 requestModal）保持 undefined。",
+        openaiNone: "openai:none（没有兼容别名）",
+        openaiSeen: "（已收到 openai:set_globals）",
+        rawTitle: "别名之下的 JSON-RPC",
+        rpcPing: "发送 ping",
+        rpcPingHint: "绕过别名直接向 shell 发 ping 请求，返回 {} 并显示耗时；日志页能看到回包。",
+        rpcLog: "写一条沙箱日志",
+        rpcLogHint: "notifications/message 进沙箱 shell 的日志，不上送宿主，也不会出现在对话里。",
+        pingOk: function (ms) {
+          return "ping 成功：" + ms + " ms";
+        },
+        pingError: function (code) {
+          return "ping 失败：" + code;
+        },
+        logSent: "已发送（去沙箱 shell 日志里看）",
+        networkTitle: "网络（CSP）",
+        fetchOk: "请求 api.github.com/zen（已放行）",
+        fetchOkHint: "返回一句话；该域名在工具 _meta 的 csp.connectDomains 里。",
+        fetchBlocked: "请求 example.com（被拦）",
+        fetchBlockedHint: "域名没有声明，被 CSP 拦截，fetch 抛错。",
+        fetchAllowed: function (t) {
+          return "已放行 → " + t;
+        },
+        fetchAllowedFailed: function (m) {
+          return "已放行的请求失败：" + m;
+        },
+        fetchUnexpected: "意外：example.com 可达",
+        fetchBlockedResult: function (m) {
+          return "被 CSP 拦截（预期）：" + m;
+        },
+        logLead:
+          "shell 发给本页面的每条 JSON-RPC 消息。预期：工具结果到达有 tool-result，切主题有 host-context-changed，订阅变更有 resources/updated，关闭卡片前有 resource-teardown。",
+        clearLog: "清空",
+        footerHost: function (api) {
+          return "主题 " + api.theme + " · 语言 " + api.locale + " · 协议 " + api.protocolVersion;
+        },
+        footerMode: function (api) {
+          return "显示模式 " + api.displayMode + " · 最大高度 " + api.maxHeight;
+        },
+        notInSandbox: "window.zcode 不可用：请在 ZCode 桌面端的插件沙箱里打开。",
+      };
+      var EN = {
+        prefix: "Expect: ",
+        tabData: "Services",
+        tabActions: "Actions",
+        tabState: "State",
+        tabResources: "Resources",
+        tabFiles: "Files",
+        tabHost: "Host",
+        tabLog: "Log",
+        dataLead:
+          "This tab renders toolOutput: a dashboard, a single service detail or the audit log.",
+        waiting: "Waiting for tool output…",
+        thService: "Service",
+        thEnv: "Env",
+        thVersion: "Version",
+        thHealth: "Health",
+        thLatency: "Latency",
+        thSelect: "Select",
+        healthy: "healthy",
+        unhealthy: "unhealthy",
+        none: "none",
+        summaryDashboard: function (n, refresh, region, at) {
+          return n + " services · refresh #" + refresh + " · region " + region + " · " + at;
+        },
+        lastDeploy: function (svc, env) {
+          return " · last deploy " + svc + "→" + env;
+        },
+        summaryService: function (s) {
+          return (
+            "service " +
+            s.name +
+            " · " +
+            (s.healthy ? "healthy" : "UNHEALTHY") +
+            " · " +
+            s.latencyMs +
+            " ms · " +
+            s.env +
+            " " +
+            s.version
+          );
+        },
+        detailHistory: "latency (last 12 min): ",
+        detailDeployments: "deployments: ",
+        summaryAudit: function (total) {
+          return "audit log · " + total + " entries (full structuredContent present)";
+        },
+        summaryAuditTruncated: "audit log · structuredContent omitted by the host (truncated)",
+        toolInput: function (json) {
+          return "toolInput: " + json;
+        },
+        truncated: function (bytes, out) {
+          return (
+            "structuredContent omitted by the host: " +
+            bytes +
+            " bytes > 64 KiB limit; toolOutput === " +
+            out +
+            "."
+          );
+        },
+        refetch: "Re-fetch via callTool",
+        refetchHint:
+          "Call the same tool from the page and get the full payload; no tool row appears and callTool results are not subject to the persistence limit.",
+        refetched: function (n) {
+          return "re-fetched " + n + " entries via callTool";
+        },
+        refetchFailed: function (m) {
+          return "re-fetch failed: " + m;
+        },
+        refresh: "Refresh (app-only tool)",
+        refreshHint:
+          "Table updates and the refresh counter increments; no tool row appears and refresh_data is absent from the model's tool list. Pick an env in the dropdown.",
+        refreshFailed: function (m) {
+          return "refresh failed: " + m;
+        },
+        toggleHealth: "Toggle health of selected",
+        toggleHealthHint:
+          "Calls the app-only tool toggle_health (no resourceUri; first row when nothing is selected). If Resources subscribed services.json, it receives updated and re-reads.",
+        toggled: function (name, healthy, notified) {
+          return (
+            "toggle_health: " +
+            name +
+            " → " +
+            (healthy ? "healthy" : "unhealthy") +
+            " (" +
+            (notified ? "subscribers notified" : "no subscribers") +
+            ")"
+          );
+        },
+        toggleFailed: function (m) {
+          return "toggle failed: " + m;
+        },
+        followUpTitle: "Follow-up messages (ui/message)",
+        followUp: "Ask the model to summarize",
+        followUpHint:
+          "The click is a user gesture: the message is sent as you immediately, labelled “from plugin showcase”, and the model replies.",
+        followUpLater: "Send in 6 s (no gesture)",
+        followUpLaterHint:
+          "Move the mouse away and wait 6 s: the host shows an editable confirmation dialog; cancelling is reported here.",
+        followUpStructured: "Send with structuredContent",
+        followUpStructuredHint:
+          "A ```json block with the selected service names (all when none selected) is appended to the message.",
+        followUpSent: "Follow-up sent.",
+        followUpCancelled: function (m) {
+          return "Follow-up cancelled: " + m;
+        },
+        followUpFailed: function (m) {
+          return "Follow-up failed: " + m;
+        },
+        followUpWait: "Will send in 6 seconds without a gesture…",
+        contextTitle: "Model context (ui/update-model-context)",
+        addContext: "Add selected rows to model context",
+        addContextHint:
+          "A “plugin context” chip appears above the composer, goes out with the next message, then disappears; clicking again replaces it.",
+        contextAdded: function (n) {
+          return "Added " + n + " rows to the composer context.";
+        },
+        contextFailed: function (m) {
+          return "Context failed: " + m;
+        },
+        addImage: "Add latency chart (png)",
+        addImageHint:
+          "The page draws a chart on a canvas; an image attachment appears in the composer and the next request carries an image block.",
+        addGif: "Add gif (rejected)",
+        addGifHint:
+          "image/gif is not allow-listed: the host rejects the whole request with -32602, shown here.",
+        imageAdded: function (mime) {
+          return "Added " + mime + " to the composer context (see the attachment chip).";
+        },
+        imageRejected: function (code, m) {
+          return "Image context rejected (" + code + "): " + m;
+        },
+        displayTitle: "Display mode & links",
+        fullscreen: "Open in side pane",
+        fullscreenHint:
+          "A side-pane tab for this plugin opens and the inline slot shows a placeholder; the actual mode fullscreen is shown here.",
+        inline: "Back to inline",
+        inlineHint:
+          "From the side pane this closes the pane and returns to the inline card; from the inline card it simply returns inline.",
+        pip: "Request pip (degrades)",
+        pipHint:
+          "The host has no picture-in-picture: it returns the current mode without an error.",
+        external: "Open MCP docs",
+        externalHint:
+          "modelcontextprotocol.io opens in the system browser; the sandbox never navigates.",
+        modeResult: function (mode, actual) {
+          return "requested " + mode + " → displayMode=" + actual;
+        },
+        modeFailed: function (m) {
+          return "displayMode failed: " + m;
+        },
+        stateLead:
+          "widgetState lives in the host renderer memory: it survives collapse/expand and inline ↔ side-pane switches, and is empty after restarting the desktop app. The selected tab is stored there too.",
+        bump: "Counter +1",
+        bumpHint:
+          "counter in the JSON below increments; collapse and re-expand the card (sandbox rebuilt) and it is still there.",
+        resetState: "Reset",
+        resetStateHint: "The state becomes {}.",
+        stateCapability: function (declared) {
+          return (
+            '// hostCapabilities.experimental["zcode/widgetState"]: ' +
+            (declared ? "declared" : "absent")
+          );
+        },
+        listResources: "List resources & templates",
+        listResourcesHint:
+          "5 fixed resources plus one template instance per service, and 1 template service/{name}.json; other plugins' resources never appear.",
+        resourcesListed: function (names, templates) {
+          return (
+            "resources " +
+            names.length +
+            ": " +
+            names.join(", ") +
+            "\ntemplates " +
+            templates.length +
+            ": " +
+            templates.join(", ")
+          );
+        },
+        listError: function (code, m) {
+          return "list error: " + code + " " + m;
+        },
+        readJson: "Read services.json",
+        readJsonHint: "Returns application/json text, the current service table.",
+        readPng: "Read logo.png",
+        readPngHint: "Returns a 149-byte image/png blob, rendered as a tiny image.",
+        readTemplate: "Read service/billing.json",
+        readTemplateHint: "The template is instantiated by name and returns billing's detail JSON.",
+        readForeign: "Read another plugin's resource (rejected)",
+        readForeignHint:
+          "The host only allows this plugin's server: an error code comes back and nothing is read.",
+        readBlob: function (bytes, mime) {
+          return "blob: " + bytes + " bytes, " + mime + " ";
+        },
+        readText: function (mime, chars, preview) {
+          return "text: " + mime + ", " + chars + " chars: " + preview;
+        },
+        readError: function (code, m) {
+          return "read rejected: " + code + " " + m;
+        },
+        subscriptionTitle: "Subscription (resources/subscribe)",
+        subscribe: "Subscribe services.json",
+        subscribeHint:
+          "Shows subscribed; afterwards toggling health or a model deploy makes the live log below show updated and re-read. Notifications carry only the uri.",
+        unsubscribe: "Unsubscribe",
+        unsubscribeHint:
+          "Further changes stop arriving; the host also unsubscribes when the card is closed or the session switched away.",
+        subOk: "subscribed",
+        unsubOk: "unsubscribed",
+        subError: function (code) {
+          return "subscribe failed: " + code;
+        },
+        unsubError: function (code) {
+          return "unsubscribe failed: " + code;
+        },
+        liveUpdated: function (uri) {
+          return "updated " + uri;
+        },
+        liveServices: function (h, t, d, at) {
+          return (
+            "services.json updated → " +
+            h +
+            "/" +
+            t +
+            " healthy, " +
+            d +
+            " deployments (updatedAt " +
+            at +
+            ")"
+          );
+        },
+        liveListChanged: "list_changed (resources)",
+        dynamicTitle: "Dynamic registration (tools / resources list_changed)",
+        registerTool: "Register experimental tool",
+        registerToolHint:
+          "The server adds forecast_capacity and experimental.json and sends both list_changed notifications (visible in the live log when subscribed); next turn the model can call forecast_capacity.",
+        registered: function (tool) {
+          return "registered " + tool + "; ask the model to forecast capacity next turn";
+        },
+        alreadyRegistered: function (tool) {
+          return "already registered: " + tool;
+        },
+        registerError: function (code, m) {
+          return "register failed: " + code + " " + m;
+        },
+        filesLead:
+          "ui/download-file: downloads inside the sandbox are blocked; the host shows a native Save As dialog per item, no gesture required.",
+        downloadCsv: "Download services.csv (text)",
+        downloadCsvHint: "One Save As dialog; the file is the current table as CSV.",
+        downloadPng: "Download logo.png (blob)",
+        downloadPngHint: "readResource first, then the base64 blob is handed to the host.",
+        downloadLink: "Download via resource_link",
+        downloadLinkHint:
+          "Only a uri is given; the host reads the content from this plugin's server itself.",
+        downloadMulti: "Download two files",
+        downloadMultiHint: "Two Save As dialogs in a row; cancelling either reports isError.",
+        downloadOk: "download complete",
+        downloadIsError: "download cancelled or failed (isError)",
+        downloadError: function (code, m) {
+          return "download error: " + code + " " + m;
+        },
+        handshakeTitle: "Handshake (ui/initialize result)",
+        handshakeLead:
+          "protocolVersion comes from the official SDK; hostCapabilities is built per instance and tells the plugin whether downloadFile, message, updateModelContext and the experimental zcode/widgetState, zcode/resourceSubscribe keys are available.",
+        contextLead:
+          "Theme, locale, display mode, available display modes, container size, time zone, device capabilities; titleBar in the side pane; style variables follow the theme.",
+        applyStyles: "Apply hostContext.styles.variables to this page",
+        applyStylesHint:
+          "Unchecking reverts the page to its own fallback colours; most visible when switching the host theme.",
+        openaiTitle: "window.openai compat",
+        openaiLead:
+          "openai:function means the host's compatibility methods are available; unsupported members (e.g. requestModal) stay undefined.",
+        openaiNone: "openai:none (no compat alias)",
+        openaiSeen: " (openai:set_globals seen)",
+        rawTitle: "Raw JSON-RPC below the alias",
+        rpcPing: "Send ping",
+        rpcPingHint:
+          "Bypasses the alias and sends ping to the shell; returns {} and shows the round trip; the Log tab shows the response.",
+        rpcLog: "Write a sandbox log line",
+        rpcLogHint:
+          "notifications/message goes to the sandbox shell log only, never to the host or the conversation.",
+        pingOk: function (ms) {
+          return "ping ok: " + ms + " ms";
+        },
+        pingError: function (code) {
+          return "ping failed: " + code;
+        },
+        logSent: "sent (see the sandbox shell log)",
+        networkTitle: "Network (CSP)",
+        fetchOk: "fetch api.github.com/zen (allowed)",
+        fetchOkHint: "Returns a sentence; the domain is declared in the tool's csp.connectDomains.",
+        fetchBlocked: "fetch example.com (blocked)",
+        fetchBlockedHint: "Undeclared domain: CSP blocks it and fetch throws.",
+        fetchAllowed: function (t) {
+          return "allowed → " + t;
+        },
+        fetchAllowedFailed: function (m) {
+          return "allowed request failed: " + m;
+        },
+        fetchUnexpected: "unexpected: example.com was reachable",
+        fetchBlockedResult: function (m) {
+          return "blocked by CSP as expected: " + m;
+        },
+        logLead:
+          "Every JSON-RPC message the shell sends to this page. Expect tool-result when results arrive, host-context-changed on theme changes, resources/updated on subscriptions and resource-teardown before the card closes.",
+        clearLog: "Clear",
+        footerHost: function (api) {
+          return (
+            "theme " + api.theme + " · locale " + api.locale + " · protocol " + api.protocolVersion
+          );
+        },
+        footerMode: function (api) {
+          return "displayMode " + api.displayMode + " · maxHeight " + api.maxHeight;
+        },
+        notInSandbox:
+          "window.zcode is unavailable: open this page inside the ZCode desktop plugin sandbox.",
+      };
+      function messagesFor(locale) {
+        return typeof locale === "string" && locale.toLowerCase().indexOf("en") === 0 ? EN : ZH;
+      }
+
+      (function () {
+        var api = window.zcode;
+        var $ = function (id) {
+          return document.getElementById(id);
+        };
+        var t = messagesFor(api && api.locale);
+        var selected = new Set();
+        var SERVICES_JSON_URI = "ui://showcase/live/services.json";
+        var LOGO_URI = "ui://showcase/logo.png";
+        var protocolLines = [];
+
+        function applyI18n() {
+          document.documentElement.lang = t === EN ? "en" : "zh-CN";
+          document.querySelectorAll("[data-i18n]").forEach(function (node) {
+            node.textContent = t[node.dataset.i18n];
+          });
+          document.querySelectorAll("[data-i18n-hint]").forEach(function (node) {
+            node.textContent = t[node.dataset.i18nHint];
+            node.setAttribute("data-prefix", t.prefix);
+          });
+        }
+
+        // SC29：与别名共享同一个 window，同样能看到 shell 发来的每条 JSON-RPC 消息；只记录，不回复。
+        var shellOrigin = location.origin.replace("://plugin-", "://shell-");
+        var rawPending = new Map();
+        var rawSeq = 0;
+        window.addEventListener("message", function (event) {
+          if (event.source !== window.parent || event.origin !== shellOrigin) return;
+          var message = event.data;
+          if (!message || message.jsonrpc !== "2.0") return;
+          if (message.method) logProtocol(message.method, message.params);
+          else logProtocol("response#" + message.id, message.error || message.result);
+          if (message.id !== undefined && rawPending.has(message.id)) {
+            var waiter = rawPending.get(message.id);
+            rawPending.delete(message.id);
+            message.error ? waiter.reject(message.error) : waiter.resolve(message.result);
+          }
+        });
+        function rawRequest(method, params) {
+          // 字符串 id 与别名的数字 id 不会撞车。
+          var id = "showcase-raw-" + ++rawSeq;
+          return new Promise(function (resolve, reject) {
+            rawPending.set(id, { resolve: resolve, reject: reject });
+            window.parent.postMessage(
+              { jsonrpc: "2.0", id: id, method: method, params: params },
+              shellOrigin,
+            );
+          });
+        }
+        function rawNotify(method, params) {
+          window.parent.postMessage(
+            { jsonrpc: "2.0", method: method, params: params },
+            shellOrigin,
+          );
+        }
+        function logProtocol(method, params) {
+          var text = "";
+          try {
+            text = JSON.stringify(params);
+          } catch (e) {
+            text = String(params);
+          }
+          if (text && text.length > 160) text = text.slice(0, 160) + "…";
+          protocolLines.push(
+            new Date().toISOString().slice(11, 23) + " " + method + " " + (text || ""),
+          );
+          if (protocolLines.length > 60) protocolLines.shift();
+          $("protocol-log").textContent = protocolLines.join("\n");
+        }
+
+        function applyStyles() {
+          var vars =
+            api && api.hostContext && api.hostContext.styles && api.hostContext.styles.variables;
+          var root = document.documentElement.style;
+          if (!vars) return;
+          Object.keys(vars).forEach(function (key) {
+            if ($("apply-styles").checked) root.setProperty(key, vars[key]);
+            else root.removeProperty(key);
+          });
+        }
+
+        function setTheme() {
+          document.documentElement.dataset.theme = api.theme === "dark" ? "dark" : "light";
+          applyStyles();
+          $("host-info").textContent = t.footerHost(api);
+          $("display-mode").textContent = t.footerMode(api);
+        }
+
+        function renderHost() {
+          var ctx = api.hostContext || {};
+          var brief = {};
+          Object.keys(ctx).forEach(function (key) {
+            brief[key] =
+              key === "styles"
+                ? "(" +
+                  Object.keys((ctx.styles && ctx.styles.variables) || {}).length +
+                  " variables)"
+                : ctx[key];
+          });
+          $("host-view").textContent = JSON.stringify(
+            {
+              protocolVersion: api.protocolVersion,
+              hostInfo: api.hostInfo,
+              hostCapabilities: api.hostCapabilities,
+            },
+            null,
+            2,
+          );
+          $("context-view").textContent = JSON.stringify(brief, null, 2);
+          renderOpenAi(null);
+        }
+        function renderOpenAi(globals) {
+          var o = window.openai;
+          $("openai-view").textContent = o
+            ? "openai:" +
+              typeof o.callTool +
+              " · theme=" +
+              o.theme +
+              " · displayMode=" +
+              o.displayMode +
+              " · userAgent=" +
+              o.userAgent +
+              " · requestModal=" +
+              typeof o.requestModal +
+              (globals ? t.openaiSeen : "")
+            : t.openaiNone;
+        }
+        window.addEventListener("openai:set_globals", function (event) {
+          renderOpenAi(event.detail && event.detail.globals);
+        });
+
+        function selectedNames(rows) {
+          return rows.filter(function (r) {
+            return selected.size === 0 || selected.has(r.name);
+          });
+        }
+        function renderRows(data) {
+          var rows = (data && data.rows) || [];
+          var last = data && data.deployments && data.deployments[data.deployments.length - 1];
+          $("summary").textContent = data
+            ? t.summaryDashboard(rows.length, data.refreshCount, data.region, data.generatedAt) +
+              (last ? t.lastDeploy(last.service, last.env) : "")
+            : t.waiting;
+          $("table").hidden = false;
+          $("detail-view").hidden = true;
+          $("rows").innerHTML = rows
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                r.name +
+                "</td><td>" +
+                r.env +
+                "</td><td>" +
+                r.version +
+                "</td>" +
+                '<td class="' +
+                (r.healthy ? "ok" : "bad") +
+                '">' +
+                (r.healthy ? t.healthy : t.unhealthy) +
+                "</td>" +
+                "<td>" +
+                r.latencyMs +
+                " ms</td>" +
+                '<td><input type="checkbox" data-select="' +
+                r.name +
+                '" ' +
+                (selected.has(r.name) ? "checked" : "") +
+                " /></td></tr>"
+              );
+            })
+            .join("");
+        }
+        function renderServiceDetail(data) {
+          $("summary").textContent = t.summaryService(data.service);
+          $("table").hidden = true;
+          $("detail-view").hidden = false;
+          $("detail-view").textContent =
+            t.detailHistory +
+            data.history
+              .map(function (h) {
+                return h.latencyMs;
+              })
+              .join(" ") +
+            "\n" +
+            t.detailDeployments +
+            (data.deployments.length
+              ? data.deployments
+                  .map(function (d) {
+                    return d.env + "@" + d.at;
+                  })
+                  .join(", ")
+              : t.none);
+        }
+        function renderAudit(data) {
+          $("summary").textContent = t.summaryAudit(data.total);
+          $("table").hidden = true;
+          $("detail-view").hidden = false;
+          $("detail-view").textContent =
+            data.entries
+              .slice(0, 5)
+              .map(function (e) {
+                return e.at + " " + e.actor + " " + e.detail;
+              })
+              .join("\n") + "\n…";
+        }
+        function renderFeed() {
+          var input = api.toolInput;
+          $("tool-input").textContent =
+            input && Object.keys(input).length ? t.toolInput(JSON.stringify(input)) : "";
+          var meta = api.toolResponseMetadata;
+          var truncated = meta && meta["zcode/truncated"];
+          $("truncated").hidden = !truncated;
+          if (truncated)
+            $("truncated-text").textContent = t.truncated(truncated.bytes, String(api.toolOutput));
+          var out = api.toolOutput;
+          if (!out) {
+            if (truncated) {
+              $("summary").textContent = t.summaryAuditTruncated;
+              $("table").hidden = true;
+              $("detail-view").hidden = true;
+            } else renderRows(null);
+            return;
+          }
+          if (out.kind === "service") renderServiceDetail(out);
+          else if (out.kind === "audit") renderAudit(out);
+          else renderRows(out);
+        }
+
+        function renderState() {
+          $("state-view").textContent =
+            JSON.stringify(api.widgetState === undefined ? null : api.widgetState, null, 2) +
+            "\n" +
+            t.stateCapability(
+              Boolean(
+                api.hostCapabilities &&
+                api.hostCapabilities.experimental &&
+                api.hostCapabilities.experimental["zcode/widgetState"],
+              ),
+            );
+          var tab = api.widgetState && api.widgetState.tab;
+          if (tab) activateTab(tab, false);
+        }
+
+        function activateTab(name, persist) {
+          document.querySelectorAll('[role="tab"]').forEach(function (b) {
+            b.setAttribute("aria-selected", String(b.dataset.tab === name));
+          });
+          document.querySelectorAll("section").forEach(function (s) {
+            s.dataset.tab === name
+              ? s.setAttribute("data-active", "")
+              : s.removeAttribute("data-active");
+          });
+          if (persist)
+            api
+              .setWidgetState(Object.assign({}, api.widgetState || {}, { tab: name }))
+              .catch(function () {});
+          reportHeight();
+        }
+
+        function reportHeight() {
+          // 量 body 的内容高度，不能用 documentElement.scrollHeight：它不小于视口高度，会和卡片高度互相抬高。
+          api.notifyIntrinsicHeight(Math.ceil(document.body.getBoundingClientRect().height));
+        }
+
+        var lastDemoInput = null;
+        function render() {
+          var next = messagesFor(api.locale);
+          if (next !== t) {
+            t = next;
+            applyI18n();
+          }
+          setTheme();
+          renderHost();
+          renderFeed();
+          renderState();
+          // 演示目录指定 tab 只在新工具输入到达时应用，不能覆盖用户之后的选择。
+          if (api.toolInput && api.toolInput !== lastDemoInput) {
+            lastDemoInput = api.toolInput;
+            if (
+              ["data", "actions", "state", "resources", "files", "host", "log"].includes(
+                api.toolInput.demoTab,
+              )
+            )
+              activateTab(api.toolInput.demoTab, true);
+          }
+          reportHeight();
+        }
+
+        applyI18n();
+        if (!api) {
+          $("summary").textContent = t.notInSandbox;
+          return;
+        }
+        window.addEventListener("zcode:globals", render);
+        render();
+
+        // 表格与 tab。
+        document.querySelectorAll('[role="tab"]').forEach(function (b) {
+          b.addEventListener("click", function () {
+            activateTab(b.dataset.tab, true);
+          });
+        });
+        $("rows").addEventListener("change", function (e) {
+          var name = e.target && e.target.dataset && e.target.dataset.select;
+          if (!name) return;
+          e.target.checked ? selected.add(name) : selected.delete(name);
+        });
+        $("apply-styles").addEventListener("change", function () {
+          applyStyles();
+        });
+
+        // SC03：app-only 回调。
+        var showData = function (text) {
+          $("data-result").textContent = text;
+          reportHeight();
+        };
+        $("refresh").addEventListener("click", function () {
+          api
+            .callTool("refresh_data", { filter: $("filter").value })
+            .then(function (result) {
+              renderRows(result.structuredContent);
+              reportHeight();
+            })
+            .catch(function (err) {
+              showData(t.refreshFailed(err.message));
+            });
+        });
+        $("toggle-health").addEventListener("click", function () {
+          var rows = (api.toolOutput && api.toolOutput.rows) || [];
+          var name = selected.size ? Array.from(selected)[0] : rows[0] ? rows[0].name : "search";
+          api
+            .callTool("toggle_health", { service: name })
+            .then(function (result) {
+              var sc = result.structuredContent;
+              renderRows({
+                rows: sc.rows,
+                refreshCount: "-",
+                region: api.toolOutput && api.toolOutput.region,
+                generatedAt: new Date().toISOString(),
+              });
+              showData(t.toggled(sc.service.name, sc.service.healthy, sc.notified));
+            })
+            .catch(function (err) {
+              showData(t.toggleFailed(err.message));
+            });
+        });
+        // SC23：截断后从页面重取全量（同一工具，visibility 含 app）。
+        $("refetch").addEventListener("click", function () {
+          var entries = api.toolInput && api.toolInput.entries;
+          api
+            .callTool("show_audit_log", entries ? { entries: entries } : {})
+            .then(function (result) {
+              renderAudit(result.structuredContent);
+              showData(t.refetched(result.structuredContent.entries.length));
+            })
+            .catch(function (err) {
+              showData(t.refetchFailed(err.message));
+            });
+        });
+
+        // SC07 / SC08：后续消息。
+        var showAction = function (text) {
+          $("action-result").textContent = text;
+          reportHeight();
+        };
+        var sendFollowUp = function (input) {
+          return api
+            .sendFollowUpMessage(input)
+            .then(function () {
+              showAction(t.followUpSent);
+            })
+            .catch(function (err) {
+              showAction(
+                err.code === -32000
+                  ? t.followUpCancelled(err.message)
+                  : t.followUpFailed(err.message),
+              );
+            });
+        };
+        $("follow-up").addEventListener("click", function () {
+          sendFollowUp({
+            prompt:
+              "Summarize the unhealthy services shown in the dashboard and suggest next steps.",
+          });
+        });
+        $("follow-up-later").addEventListener("click", function () {
+          showAction(t.followUpWait);
+          setTimeout(function () {
+            sendFollowUp({
+              prompt:
+                "Scheduled check-in from the showcase plugin: anything to do about the staging search service?",
+            });
+          }, 6000);
+        });
+        $("follow-up-structured").addEventListener("click", function () {
+          var rows = selectedNames((api.toolOutput && api.toolOutput.rows) || []);
+          sendFollowUp({
+            prompt: "Review the selected services below.",
+            structuredContent: {
+              selected: rows.map(function (r) {
+                return r.name;
+              }),
+              count: rows.length,
+            },
+          });
+        });
+        // SC09 / SC10：模型上下文。
+        $("add-context").addEventListener("click", function () {
+          var rows = selectedNames((api.toolOutput && api.toolOutput.rows) || []);
+          api
+            .updateModelContext({
+              content: [
+                {
+                  type: "text",
+                  text:
+                    "Dashboard selection:\n" +
+                    rows
+                      .map(function (r) {
+                        return (
+                          "- " +
+                          r.name +
+                          " (" +
+                          r.env +
+                          ", " +
+                          (r.healthy ? "healthy" : "UNHEALTHY") +
+                          ", " +
+                          r.latencyMs +
+                          " ms)"
+                        );
+                      })
+                      .join("\n"),
+                },
+              ],
+              structuredContent: { rows: rows },
+            })
+            .then(function () {
+              showAction(t.contextAdded(rows.length));
+            })
+            .catch(function (err) {
+              showAction(t.contextFailed(err.message));
+            });
+        });
+        function drawChart() {
+          var rows = (api.toolOutput && api.toolOutput.rows) || [];
+          var canvas = $("chart");
+          var g = canvas.getContext("2d");
+          g.fillStyle = "#ffffff";
+          g.fillRect(0, 0, canvas.width, canvas.height);
+          var max = Math.max.apply(
+            null,
+            rows
+              .map(function (r) {
+                return r.latencyMs;
+              })
+              .concat([1]),
+          );
+          rows.forEach(function (r, i) {
+            var h = Math.round((r.latencyMs / max) * 90);
+            g.fillStyle = r.healthy ? "#1a7f37" : "#cf222e";
+            g.fillRect(16 + i * 72, 100 - h, 48, h);
+            g.fillStyle = "#1f2328";
+            g.font = "11px sans-serif";
+            g.fillText(r.name.slice(0, 10), 16 + i * 72, 114);
+          });
+          return canvas.toDataURL("image/png").split(",")[1];
+        }
+        function addImage(mimeType, data, label) {
+          api
+            .updateModelContext({
+              content: [
+                { type: "text", text: label },
+                { type: "image", data: data, mimeType: mimeType },
+              ],
+            })
+            .then(function () {
+              showAction(t.imageAdded(mimeType));
+            })
+            .catch(function (err) {
+              showAction(t.imageRejected(err.code, err.message));
+            });
+        }
+        $("add-image-context").addEventListener("click", function () {
+          addImage("image/png", drawChart(), "Latency chart of the current dashboard rows.");
+        });
+        $("add-gif-context").addEventListener("click", function () {
+          addImage(
+            "image/gif",
+            "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+            "A 1x1 gif.",
+          );
+        });
+        // SC05 / SC06：显示模式与外链。
+        var requestMode = function (mode) {
+          api
+            .requestDisplayMode({ mode: mode })
+            .then(function (r) {
+              showAction(t.modeResult(mode, r.mode));
+            })
+            .catch(function (err) {
+              showAction(t.modeFailed(err.message));
+            });
+        };
+        $("fullscreen").addEventListener("click", function () {
+          requestMode("fullscreen");
+        });
+        $("inline").addEventListener("click", function () {
+          requestMode("inline");
+        });
+        $("pip").addEventListener("click", function () {
+          requestMode("pip");
+        });
+        $("external").addEventListener("click", function () {
+          api.openExternal({ href: "https://modelcontextprotocol.io/" });
+        });
+
+        // SC11：widgetState。
+        $("bump").addEventListener("click", function () {
+          var next = Object.assign({}, api.widgetState || {}, {
+            counter: ((api.widgetState && api.widgetState.counter) || 0) + 1,
+          });
+          api.setWidgetState(next).then(renderState, renderState);
+        });
+        $("reset-state").addEventListener("click", function () {
+          api.setWidgetState({}).then(renderState, renderState);
+        });
+
+        // SC15 / SC16：资源读取与列表。
+        var showRead = function (text) {
+          $("read-view").firstChild.nodeValue = text;
+          reportHeight();
+        };
+        $("read-view").insertBefore(document.createTextNode(""), $("read-image"));
+        $("list-resources").addEventListener("click", function () {
+          Promise.all([api.listResources(), api.listResourceTemplates()])
+            .then(function (results) {
+              var names = results[0].resources
+                .map(function (r) {
+                  return r.name || r.uri;
+                })
+                .sort();
+              $("resources-view").textContent = t.resourcesListed(
+                names,
+                results[1].resourceTemplates.map(function (x) {
+                  return x.uriTemplate;
+                }),
+              );
+              reportHeight();
+            })
+            .catch(function (err) {
+              $("resources-view").textContent = t.listError(err.code, err.message);
+            });
+        });
+        function readInto(uri) {
+          $("read-image").hidden = true;
+          return api
+            .readResource(uri)
+            .then(function (result) {
+              var item = result.contents[0];
+              if (item.blob) {
+                $("read-image").src = "data:" + item.mimeType + ";base64," + item.blob;
+                $("read-image").hidden = false;
+                showRead(t.readBlob(atob(item.blob).length, item.mimeType));
+              } else {
+                showRead(
+                  t.readText(
+                    item.mimeType,
+                    item.text.length,
+                    item.text.replace(/\s+/g, " ").slice(0, 120),
+                  ),
+                );
+              }
+            })
+            .catch(function (err) {
+              showRead(t.readError(err.code, err.message));
+            });
+        }
+        $("read-json").addEventListener("click", function () {
+          readInto(SERVICES_JSON_URI);
+        });
+        $("read-png").addEventListener("click", function () {
+          readInto(LOGO_URI);
+        });
+        $("read-template").addEventListener("click", function () {
+          readInto("ui://showcase/service/billing.json");
+        });
+        $("read-foreign").addEventListener("click", function () {
+          readInto("ui://other-plugin/secret.json");
+        });
+        // SC17 / SC19：订阅；通知只带 uri，页面自行重读。
+        var liveLines = [];
+        var showLive = function (line) {
+          liveLines.push(new Date().toISOString().slice(11, 19) + " " + line);
+          $("live-log").textContent = liveLines.slice(-12).join("\n");
+          reportHeight();
+        };
+        api.onResourceUpdated(function (uri) {
+          if (uri !== SERVICES_JSON_URI) {
+            showLive(t.liveUpdated(uri));
+            return;
+          }
+          api.readResource(uri).then(function (result) {
+            var data = JSON.parse(result.contents[0].text);
+            showLive(
+              t.liveServices(
+                data.services.filter(function (s) {
+                  return s.healthy;
+                }).length,
+                data.services.length,
+                data.deployments.length,
+                data.updatedAt,
+              ),
+            );
+          });
+        });
+        api.onResourceListChanged(function () {
+          showLive(t.liveListChanged);
+        });
+        $("subscribe").addEventListener("click", function () {
+          api
+            .subscribeResource(SERVICES_JSON_URI)
+            .then(function () {
+              $("subscribe-result").textContent = t.subOk;
+            })
+            .catch(function (err) {
+              $("subscribe-result").textContent = t.subError(err.code);
+            });
+        });
+        $("unsubscribe").addEventListener("click", function () {
+          api
+            .unsubscribeResource(SERVICES_JSON_URI)
+            .then(function () {
+              $("subscribe-result").textContent = t.unsubOk;
+            })
+            .catch(function (err) {
+              $("subscribe-result").textContent = t.unsubError(err.code);
+            });
+        });
+        // SC18：动态注册。
+        $("register-tool").addEventListener("click", function () {
+          api
+            .callTool("register_experimental_tool", {})
+            .then(function (result) {
+              var sc = result.structuredContent;
+              $("register-result").textContent = sc.alreadyRegistered
+                ? t.alreadyRegistered(sc.tool)
+                : t.registered(sc.tool);
+            })
+            .catch(function (err) {
+              $("register-result").textContent = t.registerError(err.code, err.message);
+            });
+        });
+
+        // SC22：downloadFile。
+        var showDownload = function (text) {
+          $("download-result").textContent = text;
+        };
+        function download(contents) {
+          api
+            .downloadFile(contents)
+            .then(function (result) {
+              showDownload(result && result.isError ? t.downloadIsError : t.downloadOk);
+            })
+            .catch(function (err) {
+              showDownload(t.downloadError(err.code, err.message));
+            });
+        }
+        function csvResource() {
+          var rows = (api.toolOutput && api.toolOutput.rows) || [];
+          var csv =
+            "service,env,version,healthy,latencyMs\n" +
+            rows
+              .map(function (r) {
+                return [r.name, r.env, r.version, r.healthy, r.latencyMs].join(",");
+              })
+              .join("\n") +
+            "\n";
+          return {
+            type: "resource",
+            resource: {
+              uri: "ui://showcase/export/services.csv",
+              name: "services.csv",
+              mimeType: "text/csv",
+              text: csv,
+            },
+          };
+        }
+        $("download-csv").addEventListener("click", function () {
+          download([csvResource()]);
+        });
+        $("download-png").addEventListener("click", function () {
+          api.readResource(LOGO_URI).then(function (result) {
+            var item = result.contents[0];
+            download([
+              {
+                type: "resource",
+                resource: {
+                  uri: "ui://showcase/export/logo.png",
+                  name: "logo.png",
+                  mimeType: item.mimeType,
+                  blob: item.blob,
+                },
+              },
+            ]);
+          });
+        });
+        $("download-link").addEventListener("click", function () {
+          download([
+            { type: "resource_link", uri: LOGO_URI, name: "logo.png", mimeType: "image/png" },
+          ]);
+        });
+        $("download-multi").addEventListener("click", function () {
+          download([
+            csvResource(),
+            {
+              type: "resource",
+              resource: {
+                uri: "ui://showcase/export/snapshot.json",
+                name: "snapshot.json",
+                mimeType: "application/json",
+                text: JSON.stringify(api.toolOutput, null, 2),
+              },
+            },
+          ]);
+        });
+
+        // SC28：别名之下的原始 JSON-RPC。
+        $("rpc-ping").addEventListener("click", function () {
+          var started = performance.now();
+          rawRequest("ping", {})
+            .then(function () {
+              $("rpc-result").textContent = t.pingOk(Math.round(performance.now() - started));
+            })
+            .catch(function (err) {
+              $("rpc-result").textContent = t.pingError(err.code);
+            });
+        });
+        $("rpc-log").addEventListener("click", function () {
+          rawNotify("notifications/message", {
+            level: "info",
+            logger: "showcase",
+            data: { hello: "sandbox log", at: new Date().toISOString() },
+          });
+          $("rpc-result").textContent = t.logSent;
+        });
+        $("clear-log").addEventListener("click", function () {
+          protocolLines = [];
+          $("protocol-log").textContent = "";
+        });
+
+        // SC30：CSP。
+        var showNet = function (text) {
+          $("network-view").textContent = text;
+          reportHeight();
+        };
+        $("fetch-ok").addEventListener("click", function () {
+          fetch("https://api.github.com/zen")
+            .then(function (r) {
+              return r.text();
+            })
+            .then(function (x) {
+              showNet(t.fetchAllowed(x));
+            })
+            .catch(function (e) {
+              showNet(t.fetchAllowedFailed(e.message));
+            });
+        });
+        $("fetch-blocked").addEventListener("click", function () {
+          fetch("https://example.com/")
+            .then(function () {
+              showNet(t.fetchUnexpected);
+            })
+            .catch(function (e) {
+              showNet(t.fetchBlockedResult(e.message));
+            });
+        });
+      })();
+    </script>
+  </body>
+</html>

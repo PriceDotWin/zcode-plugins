@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Showcase · Case laboratory</title>
+    <style>
+      __SHOWCASE_STYLES__
+    </style>
+  </head>
+  <body class="text-ui-base">
+    <header>
+      <div>
+        <strong data-zh="插件能力实验室" data-en="Plugin capability laboratory"></strong>
+        <span class="muted">0.3.0</span>
+      </div>
+      <p
+        class="muted text-ui-caption"
+        data-zh="53 个 case · 操作、预期与真实结果。配合操作需观察宿主；待实现项不计为已支持。"
+        data-en="53 cases · Actions, expectations and real results. Guided cases require host observations; pending items are not supported features."
+      ></p>
+      <div class="actions">
+        <button id="move-sidebar" data-zh="在侧栏继续" data-en="Move to side pane"></button>
+        <button id="move-inline" data-zh="回到内联" data-en="Move inline"></button>
+        <button
+          id="export-observations"
+          data-zh="导出观察记录"
+          data-en="Export observations"
+        ></button>
+      </div>
+      <output id="connection" role="status"></output>
+    </header>
+    <nav aria-label="Laboratory">
+      <a href="#catalogue" data-zh="全部 case" data-en="All cases"></a>
+      <a href="#sampling" data-zh="模型问答" data-en="Sampling"></a>
+      <a href="#retention" data-zh="页面保活" data-en="Retention"></a>
+      <a href="#storage" data-zh="浏览器存储" data-en="Storage"></a>
+      <a href="#check" data-zh="工具取消" data-en="Cancellation"></a>
+      <a href="#page-tools" data-zh="模型操作页面" data-en="Model edits page"></a>
+      <a href="#failures" data-zh="失败演示" data-en="Failures"></a>
+      <a href="#host" data-zh="宿主与日志" data-en="Host and logs"></a>
+    </nav>
+    <main>
+      <section id="catalogue">
+        <h2 class="text-ui-lg" data-zh="完整 case 目录" data-en="Complete case directory"></h2>
+        <div class="actions">
+          <label
+            ><span data-zh="查找" data-en="Find"></span> <input id="case-search" type="search"
+          /></label>
+          <label
+            ><span data-zh="方式" data-en="Mode"></span>
+            <select id="case-mode">
+              <option value="all" data-zh="全部" data-en="All"></option>
+              <option value="direct" data-zh="直接操作" data-en="Interactive"></option>
+              <option value="guided" data-zh="配合操作" data-en="Guided"></option>
+              <option value="fixture" data-zh="自动化专用" data-en="Fixture only"></option>
+              <option value="pending" data-zh="待宿主实现" data-en="Pending"></option></select
+          ></label>
+          <output id="case-count"></output>
+        </div>
+        <div id="case-list" class="case-list" aria-label="Cases"></div>
+        <article id="case-detail" aria-live="polite"></article>
+        <label
+          for="demo-prompt"
+          data-zh="可编辑演示指令（点击发送会开启主对话回合）"
+          data-en="Editable demo instruction (sending starts a main conversation turn)"
+        ></label>
+        <textarea id="demo-prompt" rows="3"></textarea>
+        <div class="actions">
+          <button id="send-demo" data-zh="发送演示指令" data-en="Send demo instruction"></button
+          ><button id="open-case" data-zh="前往操作区" data-en="Go to controls"></button>
+        </div>
+      </section>
+      <section id="sampling">
+        <h2
+          class="text-ui-lg"
+          data-zh="App 内模型问答 · SC36–SC41 / SC49"
+          data-en="In-App sampling · SC36–SC41 / SC49"
+        ></h2>
+        <p
+          class="muted"
+          data-zh="使用当前任务模型和用量。回答留在此页面；页面只发送已完成的对话历史，不继承主聊天内容。"
+          data-en="Uses the current task model and usage. Replies stay here; only this page's completed history is sent, without the main chat context."
+        ></p>
+        <p id="sampling-capability" role="status"></p>
+        <form id="sampling-form">
+          <label for="sampling-prompt" data-zh="问题" data-en="Question"></label
+          ><textarea id="sampling-prompt" rows="2" required></textarea>
+          <div class="actions">
+            <label
+              ><input id="sampling-image" type="checkbox" /><span
+                data-zh="附带固定演示 PNG"
+                data-en="Include the fixed demo PNG"
+              ></span></label
+            ><button
+              id="sampling-send"
+              type="submit"
+              data-zh="发送给当前模型"
+              data-en="Send to current model"
+              disabled
+            ></button
+            ><button
+              id="sampling-cancel"
+              type="button"
+              data-zh="取消请求"
+              data-en="Cancel request"
+              disabled
+            ></button
+            ><button
+              id="sampling-reset"
+              type="button"
+              data-zh="清空页面对话"
+              data-en="Reset page conversation"
+            ></button>
+          </div>
+        </form>
+        <div class="actions">
+          <label
+            ><span data-zh="拒绝场景" data-en="Rejection case"></span
+            ><select id="sampling-invalid">
+              <option>temperature</option>
+              <option>tools</option>
+              <option>audio</option>
+            </select></label
+          ><button
+            id="sampling-reject"
+            data-zh="运行拒绝演示"
+            data-en="Run rejection demo"
+            disabled
+          ></button>
+        </div>
+        <output id="sampling-status" role="status" data-phase="idle"></output>
+        <pre id="sampling-history" class="scroll-box" tabindex="0"></pre>
+      </section>
+      <section id="retention">
+        <h2
+          class="text-ui-lg"
+          data-zh="活页面保留 · SC32 / SC42 / SC43"
+          data-en="Live page retention · SC32 / SC42 / SC43"
+        ></h2>
+        <p
+          class="muted"
+          data-zh="填写并滚动后切换位置或任务；比较启动标识、计数、输入和滚动。这里的值仅在 JS/DOM 中，没有通过快照恢复。"
+          data-en="Type and scroll, then move or switch tasks. Compare the boot ID, count, input and scroll. These values live only in JS/DOM and are not restored from snapshots."
+        ></p>
+        <code id="boot-id"></code>
+        <div class="actions">
+          <button id="heap-bump" data-zh="页面计数 +1" data-en="Page count +1"></button
+          ><output id="heap-count">0</output>
+        </div>
+        <label
+          for="heap-input"
+          data-zh="仅属于活页的输入"
+          data-en="Input owned by this live page"
+        ></label
+        ><input id="heap-input" />
+        <div
+          id="heap-scroll"
+          class="scroll-box"
+          tabindex="0"
+          aria-label="Retention scroll area"
+        ></div>
+      </section>
+      <section id="storage">
+        <h2
+          class="text-ui-lg"
+          data-zh="持久存储样本 · SC33 / SC45"
+          data-en="Persistent storage samples · SC33 / SC45"
+        ></h2>
+        <p
+          class="muted"
+          data-zh="仅访问本实验室的 key 和数据库。写入后重启再读取。全局清理需在隔离 profile 中使用应用设置操作。"
+          data-en="Accesses only this lab's key and database. Restart after writing, then read again. Test global clearing through app settings in an isolated profile."
+        ></p>
+        <label for="storage-value" data-zh="样本内容" data-en="Sample value"></label
+        ><input id="storage-value" value="Showcase sample" />
+        <div class="actions">
+          <button id="storage-write" data-zh="写入两种存储" data-en="Write both stores"></button
+          ><button id="storage-read" data-zh="读取两种存储" data-en="Read both stores"></button
+          ><button id="storage-delete" data-zh="删除本页样本" data-en="Delete lab samples"></button>
+        </div>
+        <pre id="storage-result" role="status"></pre>
+      </section>
+      <section id="check">
+        <h2
+          class="text-ui-lg"
+          data-zh="只读工具取消 · SC34"
+          data-en="Read-only tool cancellation · SC34"
+        ></h2>
+        <p
+          class="muted"
+          data-zh="真实 MCP 调用等待十秒，可在完成前取消。App 工具进度尚未接通，因此不显示模拟进度条。"
+          data-en="A real MCP call waits ten seconds and can be cancelled. App-side progress is pending, so no simulated progress bar is shown."
+        ></p>
+        <div class="actions">
+          <button id="check-start" data-zh="启动检查" data-en="Start check" disabled></button
+          ><button id="check-cancel" data-zh="取消检查" data-en="Cancel check" disabled></button>
+        </div>
+        <output id="check-status" data-phase="idle" role="status"></output>
+      </section>
+      <section id="page-tools">
+        <h2
+          class="text-ui-lg"
+          data-zh="模型调用页面工具 · SC53"
+          data-en="Model calls a page tool · SC53"
+        ></h2>
+        <p
+          class="muted"
+          data-zh="保持页面打开，请模型调用 page_edit。delayed=true 时点击完成，或停止主对话验证取消。工具遵循宿主既有审批。"
+          data-en="Keep this page open and ask the model to call page_edit. With delayed=true, click Complete or stop the main turn to test cancellation. Existing host approval applies."
+        ></p>
+        <pre id="page-note"></pre>
+        <button
+          id="page-tool-finish"
+          data-zh="完成等待中的页面编辑"
+          data-en="Complete pending page edit"
+          disabled
+        ></button>
+        <output id="page-tool-status" data-phase="idle" role="status"></output>
+      </section>
+      <section id="failures">
+        <h2
+          class="text-ui-lg"
+          data-zh="失败结果的展示资格 · SC35"
+          data-en="Failed result eligibility · SC35"
+        ></h2>
+        <p
+          class="muted"
+          data-zh="需由模型调用才能观察工具行展示。先保留一个成功仪表盘，再发送以下演示指令。"
+          data-en="A model tool call is required to observe the tool row. Keep a successful dashboard open, then send the selected demo instruction."
+        ></p>
+        <div class="actions">
+          <label
+            ><span data-zh="展示偏好" data-en="Display preference"></span
+            ><select id="failure-mode">
+              <option>inline</option>
+              <option>fullscreen</option>
+              <option>pinned</option>
+            </select></label
+          ><label
+            ><input id="failure-throw" type="checkbox" /><span
+              data-zh="抛出异常"
+              data-en="Throw an exception"
+            ></span></label
+          ><button
+            id="failure-prepare"
+            data-zh="准备可编辑指令"
+            data-en="Prepare editable instruction"
+          ></button>
+        </div>
+      </section>
+      <section id="host">
+        <h2 class="text-ui-lg" data-zh="宿主与实际观察" data-en="Host and actual observations"></h2>
+        <pre id="host-context" class="scroll-box" tabindex="0"></pre>
+        <pre id="observations" class="scroll-box" tabindex="0" aria-live="polite"></pre>
+      </section>
+    </main>
+    <script>
+      __SHOWCASE_CLIENT__;
+    </script>
+  </body>
+</html>

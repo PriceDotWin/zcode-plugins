@@ -47,6 +47,16 @@ Do not commit credentials, private endpoints, customer data, machine-specific pa
 
 ## Pull request checklist
 
+### Declare the plugin type (required)
+
+Every PR must complete **Plugin type** in the [PR template](.github/PULL_REQUEST_TEMPLATE.md) before requesting review. Select exactly one option and list the affected manifest `name` values:
+
+- **UI Plugin**: an affected plugin provides MCP Apps interactive pages, whether through `ui.surfaces` or a tool's `_meta.ui.resourceUri`. Select this even for changes limited to that plugin's docs or skills, or when adding or removing its interactive page.
+- **Standard plugin**: an affected plugin provides no MCP Apps interactive page. MCP tools alone, or a skill that generates Gen UI, do not make a plugin a UI Plugin.
+- **Not applicable**: only repository-level documentation, build, or CI changes; no installable plugin content changes.
+
+If more than one plugin is affected, list each name and type, and select UI Plugin if any is affected. This declaration does not replace the marketplace `category` or the Conventional Commits title. Reviewers must confirm it is complete and accurate before approving.
+
 In the pull request description, include:
 
 - what user problem the change solves;
@@ -57,6 +67,7 @@ In the pull request description, include:
 
 Before requesting review, confirm:
 
+- [ ] the required plugin type is selected and affected plugin names are listed;
 - [ ] the plugin name is unique and kebab-case;
 - [ ] required files and both language READMEs are present;
 - [ ] the category is correct;

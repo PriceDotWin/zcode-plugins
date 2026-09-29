@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZCode Blender</title>
+    <!-- 由 scripts/build-ui.mjs 生成 ui/dist/panel.html：CSS/JS 内联，不引用外部资源（沙箱 CSP 不放行外域）。 -->
+    <style>
+      /*__CSS__*/
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1 id="title">Blender</h1>
+      <span id="file-name" class="file-name"></span>
+      <span id="revision" class="badge" hidden></span>
+      <span class="spacer"></span>
+      <span id="engine" class="engine"
+        ><span class="dot"></span><span id="engine-text"></span
+      ></span>
+    </header>
+    <div class="toolbar">
+      <div class="segmented" role="tablist">
+        <button type="button" role="tab" id="tab-scene" data-tab="scene" aria-selected="true">
+          场景
+        </button>
+        <button type="button" role="tab" id="tab-render" data-tab="render" aria-selected="false">
+          渲染
+        </button>
+      </div>
+      <button type="button" id="btn-refresh" class="icon-btn" data-icon="refresh"></button>
+      <div class="render-group">
+        <button type="button" id="btn-render" class="primary" data-icon="render">
+          <span id="btn-render-label">渲染</span>
+        </button>
+        <select id="render-engine" aria-label="render engine">
+          <option value="eevee" id="engine-eevee">EEVEE · 快</option>
+          <option value="cycles" id="engine-cycles">Cycles · 高质量</option>
+        </select>
+      </div>
+      <span class="spacer"></span>
+      <div class="ai-actions">
+        <button type="button" id="btn-lighting" class="ghost" data-icon="sparkle">
+          <span id="btn-lighting-label">调灯光</span>
+        </button>
+        <button type="button" id="btn-camera" class="ghost" data-icon="sparkle">
+          <span id="btn-camera-label">找机位</span>
+        </button>
+      </div>
+    </div>
+    <div id="banner" role="status" hidden>
+      <span id="banner-text"></span>
+      <button type="button" id="banner-close" class="icon-btn" data-icon="close" hidden></button>
+    </div>
+
+    <section id="empty">
+      <div class="empty-card">
+        <h2 id="empty-title">还没有打开场景</h2>
+        <p id="empty-hint" class="muted"></p>
+        <p id="engine-hint" class="engine-hint" hidden></p>
+        <div id="files-title" class="section-title"></div>
+        <div id="files" class="files"></div>
+      </div>
+    </section>
+
+    <section id="workspace" hidden>
+      <div id="scene-tab">
+        <aside class="tree-pane scroll">
+          <h3 id="tree-title">对象</h3>
+          <div id="tree" role="listbox" tabindex="0"></div>
+        </aside>
+        <div id="viewer">
+          <div class="viewer-tools">
+            <button type="button" id="btn-fit" class="icon-btn floating" data-icon="fit"></button>
+            <button
+              type="button"
+              id="btn-focus"
+              class="icon-btn floating"
+              data-icon="focus"
+            ></button>
+          </div>
+          <div id="viewer-busy" class="busy-pill" hidden></div>
+          <div id="viewer-note"></div>
+        </div>
+        <aside class="props-pane scroll">
+          <h3 id="props-title">属性</h3>
+          <div id="props"></div>
+        </aside>
+      </div>
+      <div id="render-tab" hidden>
+        <div class="render-meta-bar">
+          <span id="render-meta"></span>
+          <span id="render-stale" class="warn" hidden></span>
+        </div>
+        <div class="render-stage">
+          <img id="render-image" alt="render preview" hidden />
+          <div id="render-empty" class="render-empty" hidden>
+            <p id="render-empty-text" class="muted"></p>
+            <button type="button" id="btn-render-empty" class="primary" data-icon="render">
+              <span id="btn-render-empty-label">渲染预览</span>
+            </button>
+          </div>
+          <div id="render-busy" class="busy-pill" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      /*__JS__*/
+    </script>
+  </body>
+</html>

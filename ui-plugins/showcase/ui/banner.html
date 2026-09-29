@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Showcase status banner</title>
+    <style>
+      /* SC24：本页的 CSP / 边框 / 高度都由资源项 _meta 决定（resources.mjs 的 BANNER_META），工具级声明只是兜底。 */
+      :root {
+        color-scheme: light dark;
+        --fg: var(--color-text-primary, #1f2328);
+        --bg: var(--color-background-primary, #fff);
+        --muted: var(--color-text-secondary, #656d76);
+        --ok: var(--color-text-success, #1a7f37);
+        --font: var(--font-sans, system-ui, "PingFang SC", sans-serif);
+      }
+      [data-theme="dark"] {
+        --fg: var(--color-text-primary, #e6edf3);
+        --bg: var(--color-background-primary, #0d1117);
+        --muted: var(--color-text-secondary, #8b949e);
+        --ok: var(--color-text-success, #3fb950);
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 13px/1.4 var(--font);
+      }
+      body {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        box-sizing: border-box;
+        height: 72px;
+      }
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        flex: none;
+      }
+      .text {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .ok {
+        color: var(--ok);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- resourceDomains → img-src：github.com 会 302 到 avatars.githubusercontent.com，两者都在声明里。加载失败只显示 alt。 -->
+    <img id="logo" alt="MCP" src="https://github.com/modelcontextprotocol.png" />
+    <div class="text">
+      <div id="text"></div>
+      <div class="muted" id="meta"></div>
+    </div>
+    <script>
+      // 文案按 hostContext.locale 前缀选 zh-CN / en-US，缺省中文（与 index.html 同一做法）。
+      var ZH = {
+        waiting: "等待工具结果…",
+        line: function (o) {
+          return (
+            "区域 <b>" +
+            o.region +
+            '</b> · <span class="ok">' +
+            o.healthy +
+            "/" +
+            o.total +
+            " 健康</span> · 最近部署 " +
+            (o.lastDeployment ? o.lastDeployment.service + "→" + o.lastDeployment.env : "无")
+          );
+        },
+        meta: function (mode) {
+          return (
+            "显示模式 " +
+            mode +
+            " · 预期：高 72px（资源 _meta heightHint）、最矮 56px（minFrameHeight）、带边框、常驻固定不进折叠区（showInline）"
+          );
+        },
+      };
+      var EN = {
+        waiting: "Waiting for tool output…",
+        line: function (o) {
+          return (
+            "region <b>" +
+            o.region +
+            '</b> · <span class="ok">' +
+            o.healthy +
+            "/" +
+            o.total +
+            " healthy</span> · last deploy " +
+            (o.lastDeployment ? o.lastDeployment.service + "→" + o.lastDeployment.env : "none")
+          );
+        },
+        meta: function (mode) {
+          return (
+            "displayMode " +
+            mode +
+            " · expect: 72px tall (resource _meta heightHint), min 56px (minFrameHeight), bordered, pinned outside the collapsed history (showInline)"
+          );
+        },
+      };
+      (function () {
+        function render() {
+          var api = window.zcode;
+          if (!api) return;
+          var t =
+            typeof api.locale === "string" && api.locale.toLowerCase().indexOf("en") === 0
+              ? EN
+              : ZH;
+          document.documentElement.dataset.theme = api.theme === "dark" ? "dark" : "light";
+          var vars = api.hostContext && api.hostContext.styles && api.hostContext.styles.variables;
+          if (vars)
+            Object.keys(vars).forEach(function (key) {
+              document.documentElement.style.setProperty(key, vars[key]);
+            });
+          var out = api.toolOutput;
+          document.getElementById("text").innerHTML = out ? t.line(out) : t.waiting;
+          document.getElementById("meta").textContent = t.meta(api.displayMode);
+          api.notifyIntrinsicHeight(72);
+        }
+        window.addEventListener("zcode:globals", render);
+        render();
+      })();
+    </script>
+  </body>
+</html>

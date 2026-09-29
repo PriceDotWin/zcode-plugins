@@ -11,6 +11,7 @@
 - [贡献指南](./CONTRIBUTING_CN.md)（[English](./CONTRIBUTING.md)）
 - [分发格式](./docs/distribution_CN.md)（[English](./docs/distribution.md)）
 - [插件开发教程](./docs/PLUGIN_DEVELOPMENT_CN.md)（[English](./docs/PLUGIN_DEVELOPMENT.md)）
+- [UI Plugin：能力、API 与调试](./UI_PLUGIN.md)（重点示例：Excalidraw）
 
 ## 插件列表
 
@@ -65,6 +66,12 @@ agent + 领域 skill」的组合；除 `accounting-and-reporting` 外都带远�
 
 ZCode 已内置官方插件市场。打开插件管理器，选择需要的插件并直接安装即可。
 
+### 从源码测试插件
+
+执行 `pnpm install --frozen-lockfile` 和 `pnpm build`，在 **插件市场 → 新增** 中添加 `dist/local-marketplace` 的绝对路径，再按需安装、启用插件。生成的来源包含根 `marketplace.json` 中全部条目，包括自己新增的插件，脚本没有固定插件名单。
+
+普通插件和 UI 插件共用注册、安装和更新流程。修改后重新构建、刷新本地来源，再重新安装选中的插件。构建或启动宿主 `pnpm dev:desktop` 都不会自动安装插件。CLI 命令和检查步骤见[现有开发教程](docs/PLUGIN_DEVELOPMENT_CN.md#18-在客户端本地测试)，编译与资源打包见[构建约定](docs/MCP_APP_BUILD.md)。
+
 ## 社区
 
 插件用着有问题，或者自己在做插件想找人聊聊？扫码加入 ZCode 插件市场开发者群 —— 我们在群里答疑、同步进展、发布市场更新。
@@ -89,7 +96,7 @@ python3 scripts/validate.py
 python3 scripts/build_dist.py
 ```
 
-5. 提交 GitHub Pull Request，并完成贡献自查清单。
+5. 提交 GitHub Pull Request，并完成贡献自查清单。**必须在 PR 模板中选择 UI Plugin 或普通插件，并填写涉及的插件名称。** 仅仓库级改动可选“不适用”，判断规则见[插件类型声明](CONTRIBUTING_CN.md#声明插件类型必填)。
 
 维护者会从质量、安全性、兼容性和许可证等方面审核提交。被接受的改动将进入官方发布流程，发布完成后会在 Pull Request 中同步结果。
 
@@ -98,3 +105,7 @@ python3 scripts/build_dist.py
 ## 许可证
 
 Apache License 2.0
+
+## MCP Apps
+
+交互插件源码位于 `ui-plugins/`，安装目录位于 `plugins/`。构建与验证见 [MCP App 构建说明](docs/MCP_APP_BUILD.md)；可选的 `zcode-mcp-app-dev` skill 提供官方 SDK 开发指引和 ZCode 扩展示例，不是运行依赖。

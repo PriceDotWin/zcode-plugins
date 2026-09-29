@@ -11,6 +11,7 @@ Use this repository to browse available plugins, install the marketplace in comp
 - [Contributing guide](./CONTRIBUTING.md) ([中文](./CONTRIBUTING_CN.md))
 - [Distribution format](./docs/distribution.md) ([中文](./docs/distribution_CN.md))
 - [Plugin development tutorial](./docs/PLUGIN_DEVELOPMENT.md) ([中文](./docs/PLUGIN_DEVELOPMENT_CN.md))
+- [UI Plugin capabilities, API and debugging guide](./UI_PLUGIN.en.md), featuring Excalidraw.
 
 ## Available Plugins
 
@@ -66,6 +67,12 @@ The `category` field in [`marketplace.json`](./marketplace.json) keeps discovery
 
 ZCode includes the official marketplace. Open the plugin manager, choose a plugin, and install it directly.
 
+### Test plugins from source
+
+Run `pnpm install --frozen-lockfile` and `pnpm build`. Add the absolute path to `dist/local-marketplace` through **Plugin Marketplace → New**, then install and enable the plugins you choose. The generated source includes every entry in the root `marketplace.json`, including your own plugins; no plugin list is built into the scripts.
+
+Ordinary plugins and UI plugins share registration, installation, and updates. After editing, rebuild, refresh the local source, and reinstall the selected plugin. Building or running the host's `pnpm dev:desktop` does not install plugins. Use the [existing development workflow](docs/PLUGIN_DEVELOPMENT.md#18-test-a-plugin-locally) for CLI commands and verification; see the [build contract](docs/MCP_APP_BUILD.md) for compilation and staging.
+
 ## Community
 
 Have a question about a plugin, or building one of your own? Join the ZCode plugin developers on Discord — that is where we answer questions, share work in progress, and announce marketplace releases.
@@ -90,7 +97,7 @@ python3 scripts/validate.py
 python3 scripts/build_dist.py
 ```
 
-5. Open a GitHub pull request and complete the contribution checklist.
+5. Open a GitHub pull request and complete the contribution checklist. **You must select UI Plugin or Standard plugin in the PR template and list the affected plugin names.** Not applicable is reserved for repository-only changes; see the [classification rules](CONTRIBUTING.md#declare-the-plugin-type-required).
 
 Maintainers review submissions for quality, security, compatibility, and licensing. Accepted changes are published through the official release process, and the pull request receives a status update when publication is complete.
 
@@ -99,3 +106,7 @@ See the [contributing guide](./CONTRIBUTING.md) for the complete requirements.
 ## License
 
 Apache License 2.0
+
+## MCP Apps
+
+Interactive plugin sources are maintained in `ui-plugins/` and their installable packages in `plugins/`. See [build and verification](docs/MCP_APP_BUILD.md). The optional `zcode-mcp-app-dev` skill provides official SDK guidance and ZCode extension examples; it is not a runtime dependency.

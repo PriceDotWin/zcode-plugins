@@ -1,0 +1,24 @@
+{
+  "name": "@zcode/plugin-showcase",
+  "version": "0.4.2",
+  "private": true,
+  "description": "ZCode MCP Apps 完整能力演示目录：基础交互、sampling、取消、保活、存储与边界场景（SC01–SC53）。",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node --check server.mjs && node --check resources.mjs && node --check data.mjs",
+    "start": "node dist/server.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/core": "2.0.0",
+    "@modelcontextprotocol/ext-apps": "2.0.0",
+    "esbuild": "^0.25.0"
+  }
+}

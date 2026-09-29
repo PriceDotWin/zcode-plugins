@@ -1,0 +1,171 @@
+/* 文件表、计划对话框与窄屏布局；设计 token 定义在 panel.css。 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+th {
+  text-align: left;
+  font-size: var(--dc-size-xs);
+  font-weight: var(--dc-medium);
+  color: var(--dc-text-muted);
+  border-bottom: 1px solid var(--dc-border);
+  padding: 6px 8px;
+}
+td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--dc-border);
+  vertical-align: top;
+}
+th.check,
+td.check {
+  width: 32px;
+  padding-right: 0;
+}
+th.num,
+td.num {
+  width: 84px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+th.date,
+td.date {
+  width: 118px;
+  color: var(--dc-text-muted);
+  font-size: var(--dc-size-xs);
+}
+.name-cell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.file-name,
+.file-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.file-path {
+  color: var(--dc-text-faint);
+  font-family: var(--dc-mono);
+  font-size: var(--dc-size-xs);
+}
+.file-note {
+  color: var(--dc-warning);
+  font-size: var(--dc-size-xs);
+}
+tr.removed td {
+  color: var(--dc-text-faint);
+}
+tr.removed .file-name {
+  text-decoration: line-through;
+}
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  color: var(--dc-text-muted);
+  font-size: var(--dc-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+.selection-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0 4px;
+  background: var(--dc-bg);
+  border-top: 1px solid var(--dc-border);
+}
+.selection-bar > span {
+  flex: 1;
+  min-width: 0;
+}
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgb(0 0 0 / 0.4);
+}
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(560px, 100%);
+  max-height: calc(100vh - 32px);
+  padding: 16px;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--border-radius-lg, 8px);
+  background: var(--dc-bg);
+  box-shadow: var(--shadow-lg, 0 10px 30px rgb(0 0 0 / 0.2));
+}
+.dialog p {
+  margin: 0;
+}
+.plan-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: auto;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius);
+}
+.plan-list li {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 6px 8px;
+  font-size: var(--dc-size-xs);
+}
+.plan-list li + li {
+  border-top: 1px solid var(--dc-border);
+}
+.plan-path {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--dc-mono);
+  word-break: break-all;
+}
+.plan-size {
+  color: var(--dc-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.outcome {
+  white-space: nowrap;
+}
+.outcome.moved {
+  color: var(--dc-success);
+}
+.outcome.changed {
+  color: var(--dc-warning);
+}
+.outcome.failed {
+  color: var(--dc-danger);
+}
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+@media (max-width: 520px) {
+  .panel {
+    padding: 12px;
+  }
+  .stat.wide {
+    grid-column: 1 / -1;
+  }
+  th.date,
+  td.date {
+    display: none;
+  }
+  th.num,
+  td.num {
+    width: 72px;
+  }
+}

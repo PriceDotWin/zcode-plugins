@@ -1,0 +1,1069 @@
+[
+  {
+    "id": "SC01",
+    "group": "基础",
+    "mode": "guided",
+    "title": {
+      "zh": "内联仪表盘",
+      "en": "Inline dashboard"
+    },
+    "steps": {
+      "zh": "调用 show_dashboard。",
+      "en": "Call show_dashboard."
+    },
+    "expected": {
+      "zh": "服务表显示在成功工具记录内，随内容调整高度。",
+      "en": "The successful tool record contains a service table that reports its content height."
+    },
+    "target": "data",
+    "tool": "show_dashboard",
+    "args": {}
+  },
+  {
+    "id": "SC02",
+    "group": "基础",
+    "mode": "guided",
+    "title": {
+      "zh": "模型与页面工具可见性",
+      "en": "Model and App tool visibility"
+    },
+    "steps": {
+      "zh": "查看模型工具列表，再在服务页点刷新。",
+      "en": "Inspect the model tool list, then refresh in the Services tab."
+    },
+    "expected": {
+      "zh": "refresh_data、toggle_health、cancellable_check 只供页面调用。",
+      "en": "refresh_data, toggle_health and cancellable_check are available only to the App."
+    },
+    "target": "data",
+    "tool": "show_dashboard",
+    "args": {}
+  },
+  {
+    "id": "SC03",
+    "group": "基础",
+    "mode": "guided",
+    "title": {
+      "zh": "页面调用与原始工具结果",
+      "en": "App calls and raw tool results"
+    },
+    "steps": {
+      "zh": "服务页选择筛选条件，点击刷新。",
+      "en": "Choose a filter in Services and click Refresh."
+    },
+    "expected": {
+      "zh": "表格更新，主对话不新增模型回合或工具行。",
+      "en": "The table updates without adding a model turn or tool row."
+    },
+    "target": "data",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "data"
+    }
+  },
+  {
+    "id": "SC04",
+    "group": "展示",
+    "mode": "guided",
+    "title": {
+      "zh": "成功结果自动打开侧栏",
+      "en": "Open successful results in the side pane"
+    },
+    "steps": {
+      "zh": "调用 open_editor。",
+      "en": "Call open_editor."
+    },
+    "expected": {
+      "zh": "成功结果的 fullscreen 偏好打开侧栏。",
+      "en": "The successful result opens the side pane using its fullscreen preference."
+    },
+    "target": "data",
+    "tool": "open_editor",
+    "args": {}
+  },
+  {
+    "id": "SC05",
+    "group": "展示",
+    "mode": "guided",
+    "title": {
+      "zh": "内联、侧栏与 pip 降级",
+      "en": "Inline, side pane and PiP fallback"
+    },
+    "steps": {
+      "zh": "操作页依次请求侧栏、内联与 pip。",
+      "en": "Request fullscreen, inline and pip in Actions."
+    },
+    "expected": {
+      "zh": "同一页面移动，pip 返回宿主实际支持的模式。",
+      "en": "The same page moves; PiP reports the actual supported mode."
+    },
+    "target": "actions",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "actions"
+    }
+  },
+  {
+    "id": "SC06",
+    "group": "展示",
+    "mode": "guided",
+    "title": {
+      "zh": "通过宿主打开外链",
+      "en": "Open links through the host"
+    },
+    "steps": {
+      "zh": "操作页点击外链按钮。",
+      "en": "Click the external link button in Actions."
+    },
+    "expected": {
+      "zh": "宿主在浏览器打开链接；不会在插件内导航。",
+      "en": "The host opens the link externally without navigating the App."
+    },
+    "target": "actions",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "actions"
+    }
+  },
+  {
+    "id": "SC07",
+    "group": "对话",
+    "mode": "guided",
+    "title": {
+      "zh": "有手势与无手势后续消息",
+      "en": "Follow-up with and without a gesture"
+    },
+    "steps": {
+      "zh": "操作页先发送，再点 6 秒后发送并移开鼠标等待。",
+      "en": "Send a follow-up, then schedule the six-second message and stop interacting."
+    },
+    "expected": {
+      "zh": "有手势直接发送；无手势显示可编辑确认，取消不发送。",
+      "en": "A gesture sends immediately; otherwise an editable confirmation can be cancelled."
+    },
+    "target": "actions",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "actions"
+    }
+  },
+  {
+    "id": "SC08",
+    "group": "对话",
+    "mode": "guided",
+    "title": {
+      "zh": "带结构化数据的后续消息",
+      "en": "Follow-up with structured data"
+    },
+    "steps": {
+      "zh": "操作页点击带 structuredContent 发送。",
+      "en": "Send the structuredContent follow-up in Actions."
+    },
+    "expected": {
+      "zh": "用户消息附带 JSON，模型接着回答。",
+      "en": "The user message includes JSON and starts a normal model turn."
+    },
+    "target": "actions",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "actions"
+    }
+  },
+  {
+    "id": "SC09",
+    "group": "对话",
+    "mode": "guided",
+    "title": {
+      "zh": "下一轮模型上下文",
+      "en": "Context for the next model turn"
+    },
+    "steps": {
+      "zh": "选择服务行，再把所选行加入上下文。",
+      "en": "Select service rows and add them to model context."
+    },
+    "expected": {
+      "zh": "输入框出现可删除 chip；更新本身不发消息。",
+      "en": "A removable composer chip appears; updating context sends no message."
+    },
+    "target": "actions",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "actions"
+    }
+  },
+  {
+    "id": "SC10",
+    "group": "对话",
+    "mode": "guided",
+    "title": {
+      "zh": "图片上下文与格式拒绝",
+      "en": "Image context and rejected formats"
+    },
+    "steps": {
+      "zh": "操作页分别加入 PNG 柱状图和 GIF。",
+      "en": "Add the PNG chart and then the GIF in Actions."
+    },
+    "expected": {
+      "zh": "PNG 成为附件；GIF 明确报不支持，不静默丢弃。",
+      "en": "PNG becomes an attachment; GIF returns an explicit unsupported-format error."
+    },
+    "target": "actions",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "actions"
+    }
+  },
+  {
+    "id": "SC11",
+    "group": "状态",
+    "mode": "guided",
+    "title": {
+      "zh": "宿主内存 widgetState",
+      "en": "Host memory widgetState"
+    },
+    "steps": {
+      "zh": "状态页计数加一；切任务返回，再重启应用比较。",
+      "en": "Increment State, switch tasks and return, then restart the application."
+    },
+    "expected": {
+      "zh": "同一任务内存快照可恢复；应用重启后不保留。",
+      "en": "The task snapshot can be restored in memory but does not survive an app restart."
+    },
+    "target": "state",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "state"
+    }
+  },
+  {
+    "id": "SC12",
+    "group": "工具",
+    "mode": "guided",
+    "title": {
+      "zh": "部署表单接受、拒绝与取消",
+      "en": "Deployment form accept, decline and cancel"
+    },
+    "steps": {
+      "zh": "调用 deploy(service=billing)，分别确认、拒绝和取消。",
+      "en": "Call deploy(service=billing), then separately accept, decline and cancel the form."
+    },
+    "expected": {
+      "zh": "仅确认写入模拟部署记录；拒绝/取消不写入。",
+      "en": "Only confirmed requests change simulated deployment data."
+    },
+    "target": "data",
+    "tool": "deploy",
+    "args": {
+      "service": "billing"
+    }
+  },
+  {
+    "id": "SC13",
+    "group": "展示",
+    "mode": "guided",
+    "title": {
+      "zh": "服务监控 surface 路由",
+      "en": "Service monitor surface routing"
+    },
+    "steps": {
+      "zh": "先打开侧栏服务监控，再调用 inspect_service(billing)。",
+      "en": "Open Service Monitor in the side pane, then inspect billing."
+    },
+    "expected": {
+      "zh": "详情进入已打开的 surface；未打开时可内联展示。",
+      "en": "Details enter the open surface, or appear inline when it is closed."
+    },
+    "target": "data",
+    "tool": "inspect_service",
+    "args": {
+      "name": "billing"
+    }
+  },
+  {
+    "id": "SC14",
+    "group": "展示",
+    "mode": "guided",
+    "title": {
+      "zh": "失败详情保留上次成功页面",
+      "en": "Failed detail preserves the successful page"
+    },
+    "steps": {
+      "zh": "先查看 billing，再调用 inspect_service(nosuch)。",
+      "en": "Inspect billing first, then inspect nosuch."
+    },
+    "expected": {
+      "zh": "失败不新建卡片、不替换 billing 的成功内容。",
+      "en": "The error creates no card and does not replace the successful billing view."
+    },
+    "target": "data",
+    "tool": "inspect_service",
+    "args": {
+      "name": "nosuch"
+    }
+  },
+  {
+    "id": "SC15",
+    "group": "资源",
+    "mode": "guided",
+    "title": {
+      "zh": "资源读取与跨来源拒绝",
+      "en": "Resource reads and cross-source rejection"
+    },
+    "steps": {
+      "zh": "资源页读取 JSON、PNG，再读其他插件 URI。",
+      "en": "Read JSON and PNG, then try another plugin's URI in Resources."
+    },
+    "expected": {
+      "zh": "同源资源可读；越权读取拒绝。",
+      "en": "Same-source resources load; cross-source access is rejected."
+    },
+    "target": "resources",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "resources"
+    }
+  },
+  {
+    "id": "SC16",
+    "group": "资源",
+    "mode": "guided",
+    "title": {
+      "zh": "列表与资源模板",
+      "en": "Resource lists and templates"
+    },
+    "steps": {
+      "zh": "资源页列出资源与模板，读取 service/billing.json。",
+      "en": "List resources and templates, then read service/billing.json."
+    },
+    "expected": {
+      "zh": "固定资源、模板实例和模板定义完整，未知服务报错。",
+      "en": "Fixed resources, template instances and the template are listed; unknown services fail."
+    },
+    "target": "resources",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "resources"
+    }
+  },
+  {
+    "id": "SC17",
+    "group": "资源",
+    "mode": "guided",
+    "title": {
+      "zh": "订阅、通知与取消订阅",
+      "en": "Subscribe, notify and unsubscribe"
+    },
+    "steps": {
+      "zh": "订阅 services.json，翻转健康态；取消订阅后重复。",
+      "en": "Subscribe to services.json and toggle health; unsubscribe and repeat."
+    },
+    "expected": {
+      "zh": "订阅时 updated 后重新读取；退订后停止该通知。",
+      "en": "Updates trigger explicit rereads while subscribed and stop after unsubscribe."
+    },
+    "target": "resources",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "resources"
+    }
+  },
+  {
+    "id": "SC18",
+    "group": "资源",
+    "mode": "guided",
+    "title": {
+      "zh": "动态工具与动态资源",
+      "en": "Dynamic tools and resources"
+    },
+    "steps": {
+      "zh": "订阅后注册实验工具两次，下一回合请求容量预测。",
+      "en": "Subscribe, register the experimental tool twice, then request a capacity forecast."
+    },
+    "expected": {
+      "zh": "列表通知可见，forecast_capacity 可发现，重复注册无重复项。",
+      "en": "List notifications appear; forecast_capacity is discoverable without duplicate registration."
+    },
+    "target": "resources",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "resources"
+    }
+  },
+  {
+    "id": "SC19",
+    "group": "恢复",
+    "mode": "guided",
+    "title": {
+      "zh": "模拟服务崩溃与订阅重放",
+      "en": "Server crash and subscription replay"
+    },
+    "steps": {
+      "zh": "先订阅，再明确调用 simulate_crash；之后刷新并翻转健康态。",
+      "en": "Subscribe, explicitly call simulate_crash, then refresh and toggle health."
+    },
+    "expected": {
+      "zh": "模拟进程重启；观察调用与订阅恢复，内存模拟数据重置。",
+      "en": "The demo server restarts; verify calls and subscriptions recover while its in-memory data resets."
+    },
+    "target": "resources",
+    "tool": "simulate_crash",
+    "args": {}
+  },
+  {
+    "id": "SC20",
+    "group": "工具",
+    "mode": "guided",
+    "title": {
+      "zh": "模型工具进度与超时声明",
+      "en": "Model tool progress and timeout metadata"
+    },
+    "steps": {
+      "zh": "调用 run_health_check，观察主对话工具行。",
+      "en": "Call run_health_check and watch its main-conversation tool row."
+    },
+    "expected": {
+      "zh": "收到五次 progress；这是模型工具进度，不是 App 调用进度。",
+      "en": "Five progress updates arrive for the model tool, not App-side tool progress."
+    },
+    "target": "data",
+    "tool": "run_health_check",
+    "args": {}
+  },
+  {
+    "id": "SC21",
+    "group": "工具",
+    "mode": "guided",
+    "title": {
+      "zh": "服务端诊断日志",
+      "en": "Server diagnostic logging"
+    },
+    "steps": {
+      "zh": "调用健康检查，查看当前 Agent 的 showcase warning。",
+      "en": "Run a health check and inspect the Agent's showcase warning."
+    },
+    "expected": {
+      "zh": "不健康服务产生 warning；没有凭据或真实业务数据。",
+      "en": "Unhealthy demo services produce a warning without credentials or real user data."
+    },
+    "target": "log",
+    "tool": "run_health_check",
+    "args": {}
+  },
+  {
+    "id": "SC22",
+    "group": "文件",
+    "mode": "guided",
+    "title": {
+      "zh": "四种下载与用户取消",
+      "en": "Four download forms and cancellation"
+    },
+    "steps": {
+      "zh": "文件页分别下载 CSV、PNG、资源链接和多文件，另做一次取消。",
+      "en": "Download CSV, PNG, resource link and multiple files, then cancel one save."
+    },
+    "expected": {
+      "zh": "通过宿主保存对话框；取消/失败返回 isError。",
+      "en": "Host save dialogs are used; cancellation or failure returns isError."
+    },
+    "target": "files",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "files"
+    }
+  },
+  {
+    "id": "SC23",
+    "group": "资源",
+    "mode": "guided",
+    "title": {
+      "zh": "大结果省略与全量重取",
+      "en": "Large result truncation and refetch"
+    },
+    "steps": {
+      "zh": "调用 show_audit_log，再点击重取全量。",
+      "en": "Call show_audit_log, then refetch the full result."
+    },
+    "expected": {
+      "zh": "持久化结构化结果被省略，页面可显式取得完整 1500 条。",
+      "en": "Persisted structured content is omitted; the App explicitly fetches all 1500 records."
+    },
+    "target": "data",
+    "tool": "show_audit_log",
+    "args": {}
+  },
+  {
+    "id": "SC24",
+    "group": "展示",
+    "mode": "guided",
+    "title": {
+      "zh": "资源元数据与常驻状态条",
+      "en": "Resource metadata and pinned banner"
+    },
+    "steps": {
+      "zh": "调用 show_status_banner，观察边框、高度和折叠行为。",
+      "en": "Call show_status_banner and inspect border, height and disclosure behavior."
+    },
+    "expected": {
+      "zh": "资源级 meta 优先于工具级；状态条常驻。",
+      "en": "Resource-level metadata overrides tool metadata and keeps the banner inline."
+    },
+    "target": "data",
+    "tool": "show_status_banner",
+    "args": {}
+  },
+  {
+    "id": "SC25",
+    "group": "展示",
+    "mode": "guided",
+    "title": {
+      "zh": "同一逻辑页面的结果替代",
+      "en": "Result replacement for one logical page"
+    },
+    "steps": {
+      "zh": "连续两次调用 show_dashboard，再触发一次失败。",
+      "en": "Call show_dashboard twice and then trigger a failed tool."
+    },
+    "expected": {
+      "zh": "同 widgetSessionId 最新成功结果承载页面；失败不替代。",
+      "en": "The latest successful result owns the shared widget; failures do not replace it."
+    },
+    "target": "data",
+    "tool": "show_dashboard",
+    "args": {}
+  },
+  {
+    "id": "SC26",
+    "group": "宿主",
+    "mode": "guided",
+    "title": {
+      "zh": "主题、语言、尺寸与宿主能力",
+      "en": "Theme, locale, size and host capabilities"
+    },
+    "steps": {
+      "zh": "宿主页观察握手；切应用语言、深浅主题并缩窄窗口。",
+      "en": "Inspect the handshake in Host, switch app language/theme and narrow the window."
+    },
+    "expected": {
+      "zh": "hostContext、文字和样式同步；窄屏可操作。",
+      "en": "Host context, labels and styles update; controls remain usable at narrow widths."
+    },
+    "target": "host",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "host"
+    }
+  },
+  {
+    "id": "SC27",
+    "group": "宿主",
+    "mode": "guided",
+    "title": {
+      "zh": "OpenAI 兼容别名与事件",
+      "en": "OpenAI compatibility alias and events"
+    },
+    "steps": {
+      "zh": "打开基础宿主页，查看 window.openai 行与事件计数。",
+      "en": "Open the legacy Host tab and inspect the window.openai row and events."
+    },
+    "expected": {
+      "zh": "基础页面兼容别名可用；实验室自己的 SDK 不另开 alias 连接。",
+      "en": "Aliases remain available in the legacy page; the SDK lab opens no second alias connection."
+    },
+    "target": "host",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "host"
+    }
+  },
+  {
+    "id": "SC28",
+    "group": "宿主",
+    "mode": "guided",
+    "title": {
+      "zh": "Ping 与页面日志",
+      "en": "Ping and page logging"
+    },
+    "steps": {
+      "zh": "宿主页点击发送 ping、写沙箱日志。",
+      "en": "Send a ping and sandbox log in Host."
+    },
+    "expected": {
+      "zh": "请求有真实响应，页面日志可观察。",
+      "en": "The request receives a real response and page logging is observable."
+    },
+    "target": "host",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "host"
+    }
+  },
+  {
+    "id": "SC29",
+    "group": "宿主",
+    "mode": "guided",
+    "title": {
+      "zh": "协议通知观测",
+      "en": "Protocol notification observations"
+    },
+    "steps": {
+      "zh": "日志页触发工具结果、主题切换、订阅更新和关闭。",
+      "en": "Trigger tool results, theme changes, resource updates and closure while observing Logs."
+    },
+    "expected": {
+      "zh": "记录实际收到的通知；关闭后的 teardown 需外部 fixture 观察。",
+      "en": "Only received notifications are logged; teardown after closure requires an external fixture."
+    },
+    "target": "log",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "log"
+    }
+  },
+  {
+    "id": "SC30",
+    "group": "宿主",
+    "mode": "guided",
+    "title": {
+      "zh": "网络 CSP 允许与拦截",
+      "en": "Network CSP allow and block"
+    },
+    "steps": {
+      "zh": "宿主页访问 api.github.com 与 example.com。",
+      "en": "Try api.github.com and example.com in Host."
+    },
+    "expected": {
+      "zh": "未声明域被拦；允许域仍可能因离线失败，不把离线当作 CSP 结果。",
+      "en": "Undeclared hosts are blocked; allowed hosts can still fail offline, which is not CSP proof."
+    },
+    "target": "host",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "host"
+    }
+  },
+  {
+    "id": "SC31",
+    "group": "设置",
+    "mode": "guided",
+    "title": {
+      "zh": "region 配置注入",
+      "en": "Region configuration injection"
+    },
+    "steps": {
+      "zh": "插件设置修改 region，重连后打开服务表或状态条。",
+      "en": "Change region in plugin settings, reconnect and open the dashboard or banner."
+    },
+    "expected": {
+      "zh": "显示新的 SHOWCASE_REGION 标签。",
+      "en": "The new SHOWCASE_REGION label is displayed."
+    },
+    "target": "data",
+    "tool": "show_dashboard",
+    "args": {}
+  },
+  {
+    "id": "SC32",
+    "group": "状态",
+    "mode": "direct",
+    "title": {
+      "zh": "同一活页面保留输入与滚动",
+      "en": "Live page preserves input and scroll"
+    },
+    "steps": {
+      "zh": "在保活区输入、加计数和滚动，再切侧栏、内联、其他任务并返回。",
+      "en": "Type, increment and scroll in Retention, then move to the side pane/inline and switch tasks."
+    },
+    "expected": {
+      "zh": "页面启动标识、输入、计数和滚动保持；没有用快照重建冒充保活。",
+      "en": "The page ID, input, counter and scroll remain unchanged rather than being reconstructed."
+    },
+    "target": "retention"
+  },
+  {
+    "id": "SC33",
+    "group": "状态",
+    "mode": "direct",
+    "title": {
+      "zh": "稳定浏览器存储与删除样本",
+      "en": "Stable browser storage and sample deletion"
+    },
+    "steps": {
+      "zh": "存储区写入样本；重建页面或重启应用后读取，最后删除样本。",
+      "en": "Write storage samples, rebuild or restart and read them, then delete the samples."
+    },
+    "expected": {
+      "zh": "localStorage 与 IndexedDB 可恢复；删除仅影响本实验室样本。",
+      "en": "Both stores survive rebuilding; deletion affects only this lab's samples."
+    },
+    "target": "storage"
+  },
+  {
+    "id": "SC34",
+    "group": "工具",
+    "mode": "direct",
+    "title": {
+      "zh": "长工具调用与取消",
+      "en": "Long tool calls and cancellation"
+    },
+    "steps": {
+      "zh": "启动十秒只读检查，取消；再次调用等待完成。",
+      "en": "Start a ten-second read-only check, cancel it, then start another and let it finish."
+    },
+    "expected": {
+      "zh": "取消和成功是不同终态；无写操作和自动重放。",
+      "en": "Cancellation and success are distinct outcomes with no mutations or automatic replay."
+    },
+    "target": "check"
+  },
+  {
+    "id": "SC35",
+    "group": "展示",
+    "mode": "guided",
+    "title": {
+      "zh": "失败、异常和展示偏好",
+      "en": "Errors, exceptions and display preferences"
+    },
+    "steps": {
+      "zh": "分别调用 show_failure、show_failure_fullscreen、show_failure_pinned；再设 throwError=true。",
+      "en": "Call show_failure, show_failure_fullscreen and show_failure_pinned, then repeat with throwError=true."
+    },
+    "expected": {
+      "zh": "失败只留普通记录，不能打开/固定新卡或替换已有成功页。",
+      "en": "Failures leave ordinary records without opening, pinning or replacing a successful App."
+    },
+    "target": "failures",
+    "tool": "show_failure",
+    "args": {}
+  },
+  {
+    "id": "SC36",
+    "group": "模型",
+    "mode": "direct",
+    "title": {
+      "zh": "App 内文本问答",
+      "en": "In-App text sampling"
+    },
+    "steps": {
+      "zh": "在模型区输入问题并点击发送。",
+      "en": "Enter a question in Sampling and click Send."
+    },
+    "expected": {
+      "zh": "使用当前任务模型，回答留在 App 内，主对话不新增回合。",
+      "en": "The current task model answers inside the App without a main-conversation turn."
+    },
+    "target": "sampling"
+  },
+  {
+    "id": "SC37",
+    "group": "模型",
+    "mode": "direct",
+    "title": {
+      "zh": "App 自己维护多轮历史",
+      "en": "App-owned multi-turn history"
+    },
+    "steps": {
+      "zh": "连续问两轮，清空后再问一轮。",
+      "en": "Ask twice, reset the conversation, then ask again."
+    },
+    "expected": {
+      "zh": "后续请求包含已完成对话；失败/取消不入历史，清空后不再携带。",
+      "en": "Requests contain completed turns only; errors/cancellations are excluded and reset clears history."
+    },
+    "target": "sampling"
+  },
+  {
+    "id": "SC38",
+    "group": "模型",
+    "mode": "direct",
+    "title": {
+      "zh": "带演示图片的模型请求",
+      "en": "Sampling with a demo image"
+    },
+    "steps": {
+      "zh": "勾选附带演示 PNG 再发送。",
+      "en": "Include the demo PNG and send a question."
+    },
+    "expected": {
+      "zh": "无敏感信息的固定图片进入请求；图片支持取决于当前模型。",
+      "en": "The fixed non-sensitive PNG enters the request; image support depends on the current model."
+    },
+    "target": "sampling"
+  },
+  {
+    "id": "SC39",
+    "group": "模型",
+    "mode": "direct",
+    "title": {
+      "zh": "中止模型请求",
+      "en": "Cancel a sampling request"
+    },
+    "steps": {
+      "zh": "发送后在完成前点击取消。",
+      "en": "Send a question and cancel before completion."
+    },
+    "expected": {
+      "zh": "中止原请求；迟到结果不改对话，下一请求可正常发送。",
+      "en": "The original request is aborted; late results cannot change history and the next request works."
+    },
+    "target": "sampling"
+  },
+  {
+    "id": "SC40",
+    "group": "模型",
+    "mode": "direct",
+    "title": {
+      "zh": "不支持参数明确拒绝",
+      "en": "Explicit rejection of unsupported parameters"
+    },
+    "steps": {
+      "zh": "依次尝试 temperature、tools 与原生 audio。",
+      "en": "Try temperature, tools and native audio in turn."
+    },
+    "expected": {
+      "zh": "显示 SDK/宿主拒绝的实际错误，不调用不支持的模型路径。",
+      "en": "Show the actual SDK/host rejection rather than using an unsupported model path."
+    },
+    "target": "sampling"
+  },
+  {
+    "id": "SC41",
+    "group": "模型",
+    "mode": "guided",
+    "title": {
+      "zh": "能力协商与不可操作任务",
+      "en": "Capability negotiation and unavailable tasks"
+    },
+    "steps": {
+      "zh": "观察宿主能力；在无可操作会话绑定的任务中再打开实验室。",
+      "en": "Inspect capabilities and reopen the lab without an actionable session binding."
+    },
+    "expected": {
+      "zh": "未声明 sampling 时发送入口禁用并解释；不绕过会话权限。",
+      "en": "Sampling stays disabled with an explanation when absent; session permissions are preserved."
+    },
+    "target": "host"
+  },
+  {
+    "id": "SC42",
+    "group": "状态",
+    "mode": "direct",
+    "title": {
+      "zh": "在途请求随活页移动",
+      "en": "Move a page during an active request"
+    },
+    "steps": {
+      "zh": "启动长检查或 sampling，来回切内联/侧栏。",
+      "en": "Start a long check or sampling request and move inline/side pane."
+    },
+    "expected": {
+      "zh": "同一请求继续，最终结果仍归原页面；不会重发。",
+      "en": "The same request continues and resolves to the original page without replay."
+    },
+    "target": "retention"
+  },
+  {
+    "id": "SC43",
+    "group": "隔离",
+    "mode": "guided",
+    "title": {
+      "zh": "窗口与工作区隔离",
+      "en": "Window and workspace isolation"
+    },
+    "steps": {
+      "zh": "两个窗口/工作区打开同名实验室，各输入不同内容并发请求。",
+      "en": "Open labs in two windows/workspaces with distinct input and requests."
+    },
+    "expected": {
+      "zh": "页面与调用互不串线；关闭一个不取消另一个。",
+      "en": "Pages and requests remain isolated; closing one cannot cancel the other."
+    },
+    "target": "retention"
+  },
+  {
+    "id": "SC44",
+    "group": "恢复",
+    "mode": "guided",
+    "title": {
+      "zh": "回收、快照和手动重试",
+      "en": "Recycling, snapshots and manual retry"
+    },
+    "steps": {
+      "zh": "基础状态页保存快照；离屏超过五分钟后重开，再手动重试。",
+      "en": "Save a legacy widget snapshot, leave it offscreen for over five minutes, reopen and retry."
+    },
+    "expected": {
+      "zh": "回收可重建页面并恢复快照；手动重试清快照，浏览器存储仍保留。",
+      "en": "Recycling may rebuild from the snapshot; manual retry clears it but keeps browser storage."
+    },
+    "target": "state",
+    "tool": "show_dashboard",
+    "args": {
+      "demoTab": "state"
+    }
+  },
+  {
+    "id": "SC45",
+    "group": "恢复",
+    "mode": "guided",
+    "title": {
+      "zh": "全局清数据与进程重启",
+      "en": "Global storage clearing and restart"
+    },
+    "steps": {
+      "zh": "仅在隔离测试 profile 写样本，使用应用清数据入口并重启后读取。",
+      "en": "Only in an isolated test profile, write samples, clear browser data via the app and restart."
+    },
+    "expected": {
+      "zh": "新进程 LS/IDB 为空；插件文件/数据库不受浏览器清理影响。",
+      "en": "The new process sees empty LS/IDB; plugin files/databases are outside browser clearing."
+    },
+    "target": "storage"
+  },
+  {
+    "id": "SC46",
+    "group": "隔离",
+    "mode": "fixture",
+    "title": {
+      "zh": "容量、回收与忙碌保护",
+      "en": "Capacity, eviction and busy protection"
+    },
+    "steps": {
+      "zh": "运行 retention fixture；生产页面不批量创建 64 个 guest。",
+      "en": "Run the retention fixture; the production demo does not create 64 guests."
+    },
+    "expected": {
+      "zh": "验证 30 任务、64 页面、五分钟回收及在途保护。",
+      "en": "Verify 30 tasks, 64 pages, five-minute eviction and busy protection."
+    },
+    "command": "node packages/desktop/scripts/mcp-apps-host-e2e.mjs --retention-only"
+  },
+  {
+    "id": "SC47",
+    "group": "隔离",
+    "mode": "fixture",
+    "title": {
+      "zh": "旧代次、迟到响应与重复接纳",
+      "en": "Stale generations, late results and duplicates"
+    },
+    "steps": {
+      "zh": "运行 chain 和 managed fixture 的受控故障序列。",
+      "en": "Run controlled fault sequences in the chain and managed fixtures."
+    },
+    "expected": {
+      "zh": "旧凭证/迟到响应不能改新实例，取消/结果只接纳一次。",
+      "en": "Old credentials and late replies cannot affect a new instance; terminal outcomes are admitted once."
+    },
+    "command": "node packages/desktop/scripts/mcp-apps-host-e2e.mjs"
+  },
+  {
+    "id": "SC48",
+    "group": "平台",
+    "mode": "guided",
+    "title": {
+      "zh": "Web、手机与远程环境回退",
+      "en": "Web, mobile and remote fallback"
+    },
+    "steps": {
+      "zh": "在相应环境查看含 Showcase 工具结果的会话。",
+      "en": "View Showcase tool results from Web, mobile and a remote workspace."
+    },
+    "expected": {
+      "zh": "普通工具记录可读；不为这些路径创建本地 MCP App 沙箱。",
+      "en": "Ordinary tool records stay readable without creating local MCP App sandboxes."
+    },
+    "target": "host"
+  },
+  {
+    "id": "SC49",
+    "group": "模型",
+    "mode": "guided",
+    "title": {
+      "zh": "请求接纳时固定当前模型",
+      "en": "Freeze the task model at admission"
+    },
+    "steps": {
+      "zh": "发起 sampling 后改任务模型，完成后再发一次。",
+      "en": "Start sampling, change the task model, then make another request after completion."
+    },
+    "expected": {
+      "zh": "在途请求仍用原模型，新请求使用新模型；显示返回 model。",
+      "en": "The in-flight request retains its model; the next uses the new model shown in the result."
+    },
+    "target": "sampling"
+  },
+  {
+    "id": "SC50",
+    "group": "恢复",
+    "mode": "guided",
+    "title": {
+      "zh": "来源撤销与窗口关闭取消",
+      "en": "Revocation and window teardown cancellation"
+    },
+    "steps": {
+      "zh": "在隔离任务发起请求，再禁用插件/关闭窗口；配合 sampling fixture。",
+      "en": "Start a request in an isolated task, revoke the plugin or close the window; use the sampling fixture for evidence."
+    },
+    "expected": {
+      "zh": "原请求中止，旧凭证拒绝，页面与监听器释放。",
+      "en": "The request is aborted, old credentials are rejected and page/listeners are released."
+    },
+    "target": "sampling"
+  },
+  {
+    "id": "SC51",
+    "group": "待实现",
+    "mode": "pending",
+    "title": {
+      "zh": "纯图片与资源链接内容扩展",
+      "en": "Image-only and resource-link message extensions"
+    },
+    "steps": {
+      "zh": "查看当前宿主计划，等待接口实现及验收后启用。",
+      "en": "Consult the current host plan; enable this only after implementation and verification."
+    },
+    "expected": {
+      "zh": "当前不提供演示按钮，不能把资源可读当作模型已收到。",
+      "en": "No demo action is offered; readable resources do not prove delivery to the model."
+    }
+  },
+  {
+    "id": "SC52",
+    "group": "待实现",
+    "mode": "pending",
+    "title": {
+      "zh": "App 工具双向进度",
+      "en": "Bidirectional App tool progress"
+    },
+    "steps": {
+      "zh": "等待 App 工具路径接通 SDK onprogress。",
+      "en": "Wait for SDK onprogress to be connected through the App tool path."
+    },
+    "expected": {
+      "zh": "当前不显示伪进度；模型工具行进度仍由 SC20 演示。",
+      "en": "No fake progress is shown; model-tool progress remains available in SC20."
+    }
+  },
+  {
+    "id": "SC53",
+    "group": "工具",
+    "mode": "guided",
+    "title": {
+      "zh": "模型调用页面工具",
+      "en": "Model calls a page-owned tool"
+    },
+    "steps": {
+      "zh": "保持实验室打开，请模型调用 page_edit；delayed=true 时在页面完成或停止主回合。",
+      "en": "Keep this lab open and ask the model to call page_edit; with delayed=true, complete it here or stop the main turn."
+    },
+    "expected": {
+      "zh": "遵循现有审批；工具在原页面执行，取消不改便签，关闭后撤销工具。",
+      "en": "Existing approval applies. The tool runs in its original page; cancellation leaves the note unchanged and teardown unregisters it."
+    },
+    "target": "page-tools",
+    "pageTool": "page_edit",
+    "args": {
+      "key": "Showcase model edit",
+      "delayed": true
+    }
+  }
+]

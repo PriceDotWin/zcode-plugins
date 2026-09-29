@@ -1,0 +1,37 @@
+{
+  "name": "disk-cleaner",
+  "version": "0.1.1",
+  "description": "只读扫描目录占用与大文件，在侧栏逐项确认后移入系统回收站。",
+  "author": {
+    "name": "ZCode"
+  },
+  "license": "MIT",
+  "skills": "skills",
+  "mcpServers": {
+    "disk-cleaner": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${ZCODE_PLUGIN_ROOT}/dist/server.mjs"],
+      "cwd": "${ZCODE_PROJECT_DIR}"
+    }
+  },
+  "ui": {
+    "surfaces": [
+      {
+        "id": "disk-cleaner",
+        "title": {
+          "zh-CN": "磁盘清理",
+          "en-US": "Disk Cleaner"
+        },
+        "icon": "hard-drive",
+        "server": "disk-cleaner",
+        "resourceUri": "ui://disk-cleaner/panel.html",
+        "availability": "session"
+      }
+    ]
+  },
+  "description_i18n": {
+    "en": "Analyze disk usage and large files, then review selected files before moving them to the system trash.",
+    "zh-CN": "只读扫描目录占用与大文件，在侧栏逐项确认后移入系统回收站。"
+  }
+}
