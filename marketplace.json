@@ -753,7 +753,7 @@
         "en": "Live hotel and flight prices compared across Booking.com, Agoda, Trip.com and Traveloka, in USD, through the PriceWin remote MCP server. No account or API key.",
         "zh-CN": "通过 PriceWin 远程 MCP 服务，实时比较 Booking.com、Agoda、Trip.com 和 Traveloka 上的酒店与机票价格（美元计价）。无需账号或 API 密钥。"
       },
-      "version": "1.0.2",
+      "version": "1.0.4",
       "author": {
         "name": "PriceWin",
         "email": "support@price.win",
